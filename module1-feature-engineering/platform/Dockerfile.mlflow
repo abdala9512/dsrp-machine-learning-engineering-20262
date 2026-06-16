@@ -1,0 +1,12 @@
+# Servidor de MLflow 3.x para todo el curso.
+# Se construye desde python:3.11-slim para fijar la ultima version 3.x de MLflow
+# (en lugar de adivinar un tag de imagen ghcr). Backend de metadatos en Postgres
+# y artefactos servidos por el propio servidor (--serve-artifacts).
+FROM python:3.11-slim
+
+RUN pip install --no-cache-dir "mlflow>=3.1" psycopg2-binary
+
+EXPOSE 5000
+
+# El backend-store-uri y demas flags se pasan via "command" en docker-compose.yml.
+ENTRYPOINT ["mlflow"]

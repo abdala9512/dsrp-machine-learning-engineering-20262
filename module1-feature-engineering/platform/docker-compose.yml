@@ -1,0 +1,227 @@
+# =============================================================================
+# Plataforma compartida del curso (Module 1 la introduce, todos la usan)
+# =============================================================================
+# Un unico docker-compose levanta TODA la infraestructura compartida:
+#
+#   Feature store (Feast)
+#     - redis       -> online store de Feast (serving de baja latencia)
+#     - postgres    -> registry / offline backend de Feast
+#
+#   Tracking de experimentos (todo el curso)
+#     - mlflow      -> servidor MLflow 3.x (http://localhost:5000)
+#     - mlflow-db   -> Postgres backend de MLflow (metadatos)
+#
+#   Orquestacion (orquestador COMPARTIDO de todo el curso)
+#     - airflow-db        -> base de metadatos de Airflow
+#     - airflow-init      -> migracion + creacion del usuario admin (one-shot)
+#     - airflow-webserver -> UI en http://localhost:8080 (airflow / airflow)
+#     - airflow-scheduler -> ejecuta los DAGs
+#
+# Todos los servicios comparten una red de Docker. Por eso, dentro de la red:
+#   - el online store de Feast es el host "redis"
+#   - MLflow es "http://mlflow:5000"
+# (desde el host usas localhost:6379 y http://localhost:5000 respectivamente).
+#
+# Levantar todo:        docker compose up -d --build
+# Solo la capa Feast:   docker compose up -d redis postgres
+# Solo MLflow:          docker compose up -d --build mlflow
+# Bajar:                docker compose down            (conserva volumenes)
+#                       docker compose down -v          (borra los datos)
+
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: Dockerfile.airflow
+  image: dsrp-course-airflow:2.10.5
+  environment: &airflow-env
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db:5432/airflow
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+    AIRFLOW__CORE__FERNET_KEY: ""
+    AIRFLOW__WEBSERVER__SECRET_KEY: "dsrp-course-platform-secret"
+    AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "true"
+    # Donde el DAG del modulo 1 lee/escribe (ver dags/feature_pipeline.py).
+    PIPELINE_DATA_DIR: /opt/airflow/data
+    FEAST_REPO_DIR: /opt/airflow/feast_repo
+    FEAST_REPO_SRC: /opt/airflow/feature_repo_src
+    FEAST_REDIS_HOST: redis
+    FEAST_REDIS_PORT: "6379"
+    # Tracking compartido y vector DB para los DAGs de todos los modulos.
+    MLFLOW_TRACKING_URI: http://mlflow:5000
+    QDRANT_URL: http://host.docker.internal:6333
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+  volumes:
+    # Cada modulo monta sus DAGs en un subfolder de /opt/airflow/dags.
+    - ./dags:/opt/airflow/dags/module1
+    - ../../module2-advanced-ml/airflow/dags:/opt/airflow/dags/module2
+    - ../../module3-time-series/airflow/dags:/opt/airflow/dags/module3
+    - ../../module4-genai/airflow/dags:/opt/airflow/dags/module4
+    # El repo de features (read-only) se monta aparte para que el DAG lo copie.
+    - ./feature_repo:/opt/airflow/feature_repo_src:ro
+    - airflow-logs:/opt/airflow/logs
+    - airflow-data:/opt/airflow/data
+    - feast-repo:/opt/airflow/feast_repo
+  user: "${AIRFLOW_UID:-50000}:0"
+  depends_on:
+    airflow-db:
+      condition: service_healthy
+
+services:
+  # =========================================================== Feast =========
+  redis:
+    image: redis:7
+    container_name: feast-redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--save", "60", "1", "--loglevel", "warning"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16
+    container_name: feast-postgres
+    environment:
+      POSTGRES_USER: feast
+      POSTGRES_PASSWORD: feast
+      POSTGRES_DB: feast
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U feast -d feast"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  # =========================================================== MLflow ========
+  mlflow-db:
+    image: postgres:16
+    container_name: mlflow-postgres
+    environment:
+      POSTGRES_USER: mlflow
+      POSTGRES_PASSWORD: mlflow
+      POSTGRES_DB: mlflow
+    volumes:
+      - mlflow-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mlflow -d mlflow"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  mlflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.mlflow
+    image: dsrp-course-mlflow:3.x
+    container_name: mlflow
+    command:
+      - server
+      - --host
+      - 0.0.0.0
+      - --port
+      - "5000"
+      - --backend-store-uri
+      - postgresql://mlflow:mlflow@mlflow-db:5432/mlflow
+      - --artifacts-destination
+      - /mlruns
+      - --serve-artifacts
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow-artifacts:/mlruns
+    depends_on:
+      mlflow-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:5000/health\")'"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  # =========================================================== Airflow =======
+  airflow-db:
+    image: postgres:16
+    container_name: airflow-postgres
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - airflow-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airflow -d airflow"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  airflow-init:
+    <<: *airflow-common
+    container_name: airflow-init
+    # One-shot: migra la base de metadatos y crea el usuario admin.
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        airflow db migrate
+        airflow users create \
+          --username airflow --password airflow \
+          --firstname Air --lastname Flow --role Admin \
+          --email admin@example.com || true
+    restart: "no"
+
+  airflow-webserver:
+    <<: *airflow-common
+    container_name: airflow-webserver
+    command: webserver
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 40s
+    depends_on:
+      airflow-db:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  airflow-scheduler:
+    <<: *airflow-common
+    container_name: airflow-scheduler
+    command: scheduler
+    depends_on:
+      airflow-db:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+  postgres-data:
+  mlflow-db-data:
+  mlflow-artifacts:
+  airflow-db-data:
+  airflow-logs:
+  airflow-data:
+  feast-repo:

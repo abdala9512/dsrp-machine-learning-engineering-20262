@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Course: notebook generator scripts are not shipped
+module1-feature-engineering/_build_notebooks.py

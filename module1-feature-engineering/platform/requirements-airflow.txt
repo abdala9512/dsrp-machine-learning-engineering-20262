@@ -1,0 +1,24 @@
+# Librerias combinadas para los DAGs de TODOS los modulos del curso.
+# Se hornean dentro de la imagen de Airflow (Dockerfile.airflow), encima de
+# apache/airflow:2.10.5-python3.11. Es una imagen PESADA porque incluye las
+# dependencias de feature engineering (modulo 1), ML avanzado (modulo 2),
+# series de tiempo (modulo 3) y GenAI / RAG (modulo 4).
+
+# --- Feature store (modulo 1) ---
+feast[redis]>=0.40
+
+# --- Datos y ML clasico (modulos 1, 2, 3) ---
+pandas>=2.0
+numpy>=1.24
+scikit-learn>=1.3
+pyarrow>=14.0
+seaborn>=0.12
+xgboost>=2.0
+statsmodels>=0.14
+
+# --- Tracking de experimentos (todo el curso) ---
+mlflow>=3.1
+
+# --- Vector DB / GenAI (modulo 4) ---
+qdrant-client>=1.7
+sentence-transformers>=2.2

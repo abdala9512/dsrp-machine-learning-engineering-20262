@@ -1,0 +1,15 @@
+# Imagen de Airflow para TODO el curso (orquestador compartido).
+#
+# Extiende la imagen oficial de Airflow con las librerias que necesitan los DAGs
+# de los cuatro modulos: feature engineering + Feast (modulo 1), ML avanzado
+# (modulo 2), series de tiempo (modulo 3) y GenAI / RAG (modulo 4).
+#
+# OJO: es una imagen GRANDE (sentence-transformers, xgboost, torch indirecto,
+# etc.). La primera construccion puede tardar varios minutos y pesar varios GB.
+FROM apache/airflow:2.10.5-python3.11
+
+# pip en esta imagen se niega a correr como root: instalamos como usuario airflow.
+USER airflow
+
+COPY requirements-airflow.txt /requirements-airflow.txt
+RUN pip install --no-cache-dir -r /requirements-airflow.txt

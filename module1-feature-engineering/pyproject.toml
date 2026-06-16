@@ -1,0 +1,31 @@
+[project]
+name = "module1-feature-engineering"
+version = "0.1.0"
+description = "Modulo 1 — Feature Engineering & Feature Stores (Advanced ML Engineering)"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    # Datos y ML
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "scikit-learn>=1.3",
+    "seaborn>=0.12",
+    "matplotlib>=3.7",
+    # IO columnar (Feast offline store / notebook 2)
+    "pyarrow>=12.0",
+    # Feature store — el extra [redis] es OBLIGATORIO para el online store
+    "feast[redis]>=0.40",
+    "redis>=5.0",
+    # Tracking de experimentos (notebook 3 registra el modelo en MLflow 3.x)
+    "mlflow>=3.1",
+    # Deep learning (la rueda CPU basta para el ejemplo de embeddings)
+    "torch>=2.1",
+    # Herramientas de notebook
+    "jupyterlab>=4.0",
+    "nbformat>=5.9",
+]
+
+[tool.uv]
+# Proyecto gestionado con uv. Instalacion:  uv sync
+# Ejecutar Jupyter:                          uv run jupyter lab
+package = false

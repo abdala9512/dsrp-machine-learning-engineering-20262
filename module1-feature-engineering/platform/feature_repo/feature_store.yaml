@@ -1,0 +1,32 @@
+# Feast configuration for Module 1.
+#
+# provider: local        -> compute/materialization runs on this machine.
+# registry: file         -> the registry (catalog of feature definitions) is a
+#                           local file. Swap to the commented Postgres block to
+#                           use the Postgres container from docker-compose.yml.
+# online_store: redis     -> low-latency serving store backed by the Redis
+#                           container (docker compose up -d redis).
+# offline_store: file     -> historical features are read from parquet files
+#                           in ./data via DuckDB/PyArrow (no extra service).
+
+project: module1_features
+provider: local
+
+registry: data/registry.db
+
+online_store:
+  type: redis
+  connection_string: "localhost:6379"
+
+offline_store:
+  type: file
+
+entity_key_serialization_version: 3
+
+# --- Optional: use Postgres as the registry instead of a local file ---------
+# Requires:  pip install "feast[postgres]"  and the postgres container running.
+#
+# registry:
+#   registry_type: sql
+#   path: postgresql://feast:feast@localhost:5432/feast
+#   cache_ttl_seconds: 60
