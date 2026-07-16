@@ -52,9 +52,10 @@ module1-feature-engineering/
 │   ├── 03_feature_pipeline_feast.ipynb       <- feature store + Feast en la practica
 │   └── 04_pipeline_entrenamiento.ipynb       <- feature store -> regresor (SalePrice) evaluado
 ├── platform/                       <- PLATAFORMA COMPARTIDA DEL CURSO
-│   ├── docker-compose.yml          <- redis + postgres (Feast) + Airflow
-│   ├── Dockerfile.airflow          <- apache/airflow:2.10.5-python3.11 + deps de los 4 modulos
-│   ├── requirements-airflow.txt    <- deps combinadas de los DAGs de todos los modulos
+│   ├── docker-compose.yml          <- redis + feast-ui + airflow (ligero, 3 contenedores)
+│   ├── Dockerfile.airflow          <- apache/airflow:2.10.5 + solo deps del Modulo 1
+│   ├── Dockerfile.feast            <- imagen minima para la UI web de Feast
+│   ├── requirements-airflow.txt    <- deps del DAG del Modulo 1 (ligero)
 │   ├── README.md                   <- guia de la plataforma (Feast + Airflow)
 │   ├── feature_repo/               <- repo de Feast (feature_store.yaml, features.py, data/)
 │   └── dags/                       <- DAG del Modulo 1 (feature_engineering_dag.py + feature_pipeline.py)
@@ -160,12 +161,17 @@ evaluado**:
               (host redis)                                  -> Redis  -> modelo
 ```
 
-`platform/docker-compose.yml` levanta, en una sola red:
+`platform/docker-compose.yml` levanta, en una sola red, **3 contenedores ligeros**:
 
-- **Feast**: `redis` (online store) + `postgres` (registry/offline).
-- **Airflow**: webserver (`http://localhost:8080`, `airflow`/`airflow`), scheduler
-  y base de metadatos. Es el **orquestador compartido del curso**: monta los DAGs
-  de los cuatro modulos en subcarpetas de `/opt/airflow/dags`.
+- **`redis`**: online store de Feast.
+- **`feast-ui`**: UI web de Feast en `http://localhost:8888`.
+- **`airflow`**: **Airflow 3 en un solo contenedor** (`airflow standalone`, SQLite)
+  con la UI en `http://localhost:8080` (login **`admin`/`airflow`**). Por defecto
+  monta solo el DAG del Modulo 1; ver `platform/README.md` para orquestar tambien
+  otros modulos.
+
+El Postgres de Feast es opcional (registry SQL) y no arranca salvo que uses el
+perfil `feast-sql-registry`.
 
 La tarea `train_model` lee el parquet del offline store, entrena un
 `RandomForestRegressor` que predice `SalePrice` (sobre `log1p`), lo evalua
@@ -183,8 +189,8 @@ Detalles completos en [`platform/README.md`](platform/README.md).
 - [**uv**](https://docs.astral.sh/uv/) para gestionar dependencias
   (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
 - Docker + Docker Compose
-- ~8 GB de disco libre (la imagen de Airflow es **pesada**: incluye deps de los 4
-  modulos — sentence-transformers, xgboost, etc.; ver `platform/README.md`)
+- La plataforma es **ligera**: 3 contenedores (redis + feast-ui + airflow) y una
+  imagen de Airflow pequena (solo deps del Modulo 1). Ver `platform/README.md`.
 
 ## Setup
 
@@ -209,8 +215,8 @@ uv run jupyter lab
 **Manual** (notebook / CLI):
 
 ```bash
-# arranca solo los servicios de Feast (Redis + Postgres)
-cd platform && docker compose up -d redis postgres
+# arranca solo el online store de Feast (+ la UI de Feast, opcional)
+cd platform && docker compose up -d redis feast-ui
 
 # corre el notebook 03 (Feast) para generar
 #   platform/feature_repo/data/housing_features.parquet
@@ -225,7 +231,7 @@ feast materialize-incremental $(date +%Y-%m-%dT%H:%M:%S)
 ```bash
 # construye + levanta toda la plataforma (Feast + Airflow)
 cd platform && docker compose up -d --build
-# abre http://localhost:8080 (airflow/airflow), des-pausa y dispara
+# abre http://localhost:8080 (login admin/airflow), des-pausa y dispara
 #   "feature_engineering_pipeline"
 # las metricas del modelo quedan en los logs de la tarea train_model
 ```
@@ -246,7 +252,9 @@ comandos y el teardown.
 - **Experiment tracking:** este modulo *no* usa MLflow. El Notebook 4 y el DAG
   entrenan y evaluan el modelo y lo guardan en disco (joblib). El tracking de
   experimentos y el Model Registry con MLflow llegan en el **Modulo 2**.
-- La imagen de Airflow es **grande** (deps de los 4 modulos). La primera build
-  tarda varios minutos.
+- La plataforma esta configurada **ligera**: **Airflow 3** corre en **un solo
+  contenedor** (`airflow standalone`, SQLite) y la imagen instala solo las deps del
+  Modulo 1. `feast` va en un venv aislado (incompatibilidad de deps con Airflow 3).
+  Para orquestar tambien otros modulos, ver `platform/README.md`.
 - Los notebooks se distribuyen **sin** salidas ejecutadas; correlos de arriba a
   abajo.

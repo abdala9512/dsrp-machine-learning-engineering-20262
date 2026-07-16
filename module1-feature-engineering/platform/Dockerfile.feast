@@ -1,0 +1,15 @@
+# Imagen minima para servir la UI web de Feast (`feast ui`).
+# Se construye aparte de la imagen de Airflow para que sea liviana.
+FROM python:3.11-slim
+
+# feast[redis] no incluye las libs de gRPC que la UI necesita (grpc_health):
+# sin ellas `feast ui` falla con ModuleNotFoundError: No module named 'grpc_health'.
+RUN pip install --no-cache-dir \
+      "feast[redis]>=0.40" \
+      grpcio-health-checking \
+      grpcio-reflection
+
+# OJO: no usar /repo como WORKDIR — el contenedor borra y recrea /repo al arrancar,
+# y si el cwd es /repo, os.getcwd() falla tras el rm (FileNotFoundError en gunicorn).
+EXPOSE 8888
+WORKDIR /

@@ -1,15 +1,17 @@
-# Imagen de Airflow para TODO el curso (orquestador compartido).
+# Imagen de Airflow 3 para el DAG del Modulo 1 (ligera).
 #
-# Extiende la imagen oficial de Airflow con las librerias que necesitan los DAGs
-# de los cuatro modulos: feature engineering + Feast (modulo 1), ML avanzado
-# (modulo 2), series de tiempo (modulo 3) y GenAI / RAG (modulo 4).
-#
-# OJO: es una imagen GRANDE (sentence-transformers, xgboost, torch indirecto,
-# etc.). La primera construccion puede tardar varios minutos y pesar varios GB.
-FROM apache/airflow:2.10.5-python3.11
+# Reto: `feast` fija uvicorn<=0.34 y fastapi viejo, incompatibles con Airflow 3
+# (uvicorn>=0.37, fastapi>=0.129). Solucion: feast vive en un venv AISLADO
+# (/opt/feast-venv) y el DAG lo invoca por CLI (FEAST_BIN). El entorno de Airflow
+# solo lleva las deps de ML clasico (pandas/sklearn/joblib), que si conviven.
+FROM apache/airflow:3.2.2-python3.11
 
-# pip en esta imagen se niega a correr como root: instalamos como usuario airflow.
+# 1) Feast en su propio venv, separado del entorno de Airflow.
+USER root
+RUN python3 -m venv /opt/feast-venv \
+ && /opt/feast-venv/bin/pip install --no-cache-dir "feast[redis]>=0.40"
+
+# 2) Deps de ML del DAG en el entorno de Airflow (pip se corre como airflow).
 USER airflow
-
 COPY requirements-airflow.txt /requirements-airflow.txt
 RUN pip install --no-cache-dir -r /requirements-airflow.txt

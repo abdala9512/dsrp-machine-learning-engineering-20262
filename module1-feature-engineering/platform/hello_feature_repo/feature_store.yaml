@@ -1,0 +1,20 @@
+# Repo de Feast del HOLA-MUNDO (proyecto `hello_features`).
+#
+# Valores por defecto pensados para el host (localhost). Dentro de Docker:
+#   - los DAGs renderizan una copia con el host "redis" y el registry
+#     COMPARTIDO del volumen /feast_data (ver dags/hello_pipeline.py)
+#   - el contenedor feast-ui hace lo mismo via `sed`; su UI (localhost:8888)
+#     muestra este proyecto junto al de housing en el selector de proyectos
+project: hello_features
+provider: local
+
+registry: data/registry.db
+
+online_store:
+  type: redis
+  connection_string: "localhost:6379"
+
+offline_store:
+  type: file
+
+entity_key_serialization_version: 3

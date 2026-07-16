@@ -9,7 +9,7 @@
 # offline_store: file     -> historical features are read from parquet files
 #                           in ./data via DuckDB/PyArrow (no extra service).
 
-project: module1_features
+project: dsrp_feast
 provider: local
 
 registry: data/registry.db

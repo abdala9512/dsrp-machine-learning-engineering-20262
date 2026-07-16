@@ -21,11 +21,14 @@ los modulos. En el Modulo 1 son dos:
 ```
 platform/
 ├── docker-compose.yml        # TODA la infraestructura compartida
-├── Dockerfile.airflow        # apache/airflow:2.10.5-python3.11 + deps de los 4 modulos
-├── requirements-airflow.txt  # deps combinadas de los DAGs de TODOS los modulos
+├── Dockerfile.airflow        # imagen de Airflow 3 (deps del Modulo 1 + feast en venv)
+├── Dockerfile.feast          # imagen de la UI de Feast
+├── serve_ui.py               # sirve la UI de Feast (agrega la ruta /api/v1/registry)
+├── requirements-airflow.txt  # deps de los DAGs
 ├── README.md                 # este archivo
-├── feature_repo/             # repo de Feast (feature_store.yaml, features.py, data/)
-└── dags/                     # DAGs del Modulo 1 (feature_pipeline.py + el DAG)
+├── feature_repo/             # repo de Feast del pipeline real (housing)
+├── hello_feature_repo/       # repo de Feast de los DAGs hola-mundo (hello_features)
+└── dags/                     # DAGs del Modulo 1 (pipelines + sus modulos de logica)
 ```
 
 ---
@@ -54,52 +57,64 @@ platform/
    programa el pipeline                            metricas en los logs de la tarea
 ```
 
-### Servicios
+### Servicios (configuracion ligera — 3 contenedores por defecto)
 
 | Servicio | Imagen / build | Rol | Puerto (host) |
 |---|---|---|---|
 | `redis` | `redis:7` | **Online store** de Feast (serving) | 6379 |
-| `postgres` | `postgres:16` | Registry / offline backend de Feast | 5432 |
-| `airflow-db` | `postgres:16` | Base de metadatos de Airflow | (interno) |
-| `airflow-init` | build `Dockerfile.airflow` | One-shot: migracion + usuario admin | — |
-| `airflow-webserver` | build `Dockerfile.airflow` | **UI de Airflow** | 8080 |
-| `airflow-scheduler` | build `Dockerfile.airflow` | Ejecuta los DAGs | — |
+| `feast-ui` | build `Dockerfile.feast` | **UI web de Feast** — proyectos housing y hola-mundo | 8888 |
+| `airflow` | build `Dockerfile.airflow` | **Airflow 3 en un solo contenedor** (`airflow standalone`, SQLite) | 8080 |
+| `redisinsight` *(opcional)* | `redis/redisinsight` | **UI web de Redis** — solo con `--profile redis-ui` | 5540 |
+| `postgres` *(opcional)* | `postgres:16` | Registry / offline SQL de Feast — solo con `--profile feast-sql-registry` | 5432 |
 
 **URIs importantes**
 - Online store de Feast dentro de la red: host `redis` (no `localhost`).
-- Airflow UI: `http://localhost:8080` (usuario `airflow` / `airflow`).
+- **UI de Feast: `http://localhost:8888`** — explora el registry (entidades,
+  feature views, fuentes y features). El registry es **compartido** y contiene
+  DOS proyectos: `module1_features` (housing) y `hello_features` (los DAGs
+  hola-mundo); cambia entre ellos con el **selector de proyectos** de la UI.
+  El contenedor corre `feast apply` sobre ambos repos al arrancar, asi que la
+  UI muestra las definiciones aunque todavia no hayas materializado datos.
+  > Nota tecnica: la UI de feast 0.64 pide el registry en `/api/v1/registry`,
+  > ruta que su servidor ya no expone (la UI carga en blanco). `serve_ui.py`
+  > arranca la app oficial y le agrega esa ruta de vuelta.
+- **Airflow UI: `http://localhost:8080`** — login **`admin` / `airflow`**.
+- **UI de Redis (opcional): `http://localhost:5540`** (RedisInsight, con
+  `--profile redis-ui`). Redis no trae UI propia; conecta al host `redis`, puerto
+  6379, para inspeccionar las claves del online store.
+
+> **Configuracion ligera (a proposito).** Para no fundir tu maquina:
+> - **Airflow 3 en UN solo contenedor** via `airflow standalone` (api-server +
+>   scheduler + dag-processor + triggerer) sobre **SQLite** (antes eran 4
+>   contenedores). Es un setup de *desarrollo*: perfecto para uno o dos DAGs
+>   pequenos.
+> - La **imagen de Airflow instala solo las deps del Modulo 1** (pandas,
+>   scikit-learn, joblib). Adios a `torch`/`sentence-transformers`/`xgboost`/
+>   `mlflow`: la imagen paso de varios GB a unos cientos de MB.
+> - **`feast` vive en un venv aislado** dentro de la imagen (`/opt/feast-venv`):
+>   feast fija `uvicorn<=0.34` y Airflow 3 exige `uvicorn>=0.37`, asi que no pueden
+>   convivir en el mismo entorno. El DAG llama a feast por su binario (`FEAST_BIN`).
+> - El **Postgres de Feast es opcional** (el registry por defecto es un archivo).
 
 > **Experiment tracking en el Modulo 2.** En el Modulo 1 no hay servidor MLflow.
 > El DAG entrena, evalua y guarda el modelo en disco; el tracking de experimentos
 > con MLflow se introduce en el Modulo 2.
 
-> **Imagen de Airflow PESADA.** `Dockerfile.airflow` instala las dependencias de
-> los cuatro modulos (Feast, scikit-learn, XGBoost, statsmodels, MLflow,
-> qdrant-client, sentence-transformers...). La primera construccion puede tardar
-> varios minutos y pesar varios GB. Es a proposito: un solo orquestador para
-> todo el curso. (La libreria `mlflow` se hornea en la imagen porque los DAGs de
-> modulos posteriores la usan; el Modulo 1 no levanta servidor MLflow.)
-
 ---
 
-## Como los modulos comparten Airflow
+## (Opcional) Orquestar tambien otros modulos
 
-El `docker-compose.yml` monta los DAGs de cada modulo en un subfolder distinto
-de `/opt/airflow/dags`:
+Para mantener la plataforma ligera, por defecto Airflow **solo monta los DAGs del
+Modulo 1**. Si quieres el orquestador compartido de todo el curso, en
+`docker-compose.yml` descomenta los montajes de DAGs de otros modulos y, en
+`requirements-airflow.txt`, sus dependencias (la imagen crecera bastante — `torch`
+pesa varios GB):
 
 ```yaml
-volumes:
-  - ./dags:/opt/airflow/dags/module1
-  - ../../module2-advanced-ml/airflow/dags:/opt/airflow/dags/module2
-  - ../../module3-time-series/airflow/dags:/opt/airflow/dags/module3
-  - ../../module4-genai/airflow/dags:/opt/airflow/dags/module4
+# docker-compose.yml (servicio airflow -> volumes)
+- ../../module3-time-series/airflow/dags:/opt/airflow/dags/module3:ro
+- ../../module4-genai/airflow/dags:/opt/airflow/dags/module4:ro
 ```
-
-Asi, al levantar la plataforma desde el Modulo 1, la UI de Airflow muestra los
-DAGs de los cuatro modulos a la vez. Los servicios de Airflow exponen
-`QDRANT_URL=http://host.docker.internal:6333`
-(con `extra_hosts: host.docker.internal:host-gateway`) para que cualquier DAG
-pueda hablar con Qdrant.
 
 ---
 
@@ -108,11 +123,17 @@ pueda hablar con Qdrant.
 ```bash
 cd module1-feature-engineering/platform
 
-# Todo (construye la imagen de Airflow):
+# Todo lo ligero (redis + feast-ui + airflow):
 docker compose up -d --build
 
-# Solo la capa Feast (flujo manual / notebooks):
-docker compose up -d redis postgres
+# Solo la capa Feast + su UI (flujo manual / notebooks, sin Airflow):
+docker compose up -d --build redis feast-ui            # UI en http://localhost:8888
+
+# Con la UI de Redis (RedisInsight) ademas:
+docker compose --profile redis-ui up -d --build       # UI en http://localhost:5540
+
+# Con el Postgres de Feast (registry SQL) ademas:
+docker compose --profile feast-sql-registry up -d --build
 
 docker compose ps          # espera a que los servicios esten "healthy"
 ```
@@ -134,6 +155,60 @@ pip install "feast[redis]" redis
 
 > Un `pip install feast` "pelado" falla en `feast apply` con
 > `Could not import module 'feast.infra.online_stores.redis'`.
+
+---
+
+## Hola mundo: Airflow + Feast (empieza por aqui)
+
+Antes del pipeline real de housing hay DOS DAGs hola-mundo, uno por cada mitad
+de un feature store. Comparten el dataset (5 usuarios × 7 dias de actividad
+**acumulada**), el repo de Feast versionado en `hello_feature_repo/` (proyecto
+`hello_features`) y la logica en `dags/hello_pipeline.py`:
+
+**1. `hello_feature_engineering` — el ciclo ONLINE (serving):**
+
+```
+ create_dataset -> transform -+
+                              +-> feast_apply -> feast_materialize -> read_online_features
+ prepare_feast_repo ---------+
+```
+
+| Tarea | Que hace |
+|------|----------|
+| `create_dataset` | 5 usuarios × 7 dias de `clicks`/`purchases` acumulados → parquet |
+| `transform` | Ingenieria de features: `conversion_rate` + timestamps de Feast |
+| `prepare_feast_repo` | Renderiza `hello_feature_repo/` para Docker (host `redis`, registry compartido) |
+| `feast_apply` | Registra entidad `user` y feature view `user_stats` |
+| `feast_materialize` | Carga el ULTIMO valor por usuario a Redis (online store) |
+| `read_online_features` | `get_online_features()` desde Redis — como un servicio de inferencia |
+
+**2. `hello_historical_features` — el ciclo OFFLINE (entrenamiento):**
+mismos primeros 4 pasos, pero termina en `get_historical_features`: un *entity
+dataframe* con pares (`user_id`, `event_timestamp`) produce un **set de
+entrenamiento point-in-time**. Como el dataset es acumulado, el efecto se ve a
+simple vista en los logs: el usuario 1 pedido en 3 fechas devuelve 3 valores
+distintos de `clicks` (41 → 110 → 161), nunca uno "del futuro". Eso es lo que
+evita el data leakage temporal.
+
+```bash
+docker compose up -d --build
+# Abre http://localhost:8080 (admin/airflow), des-pausa los DAGs `hello_*`
+# y dales ▶ Trigger (primero el online, luego el historico — o al reves; son
+# independientes).
+```
+
+Donde ver los resultados:
+
+- **Logs de las tareas** `read_online_features` / `get_historical_features` en
+  la UI de Airflow.
+- **UI de Feast: http://localhost:8888**, proyecto `hello_features` en el
+  selector de proyectos (entidad `user`, feature view `user_stats`). El
+  registry compartido vive en el volumen `feast-data`.
+- **RedisInsight** (`--profile redis-ui`, http://localhost:5540): las claves del
+  proyecto `hello_features` (busca con el patron `*hello_features`; los nombres
+  de clave son binarios, es normal que se vean "raros").
+
+Cuando las dos mitades queden claras, pasa al pipeline real:
 
 ---
 

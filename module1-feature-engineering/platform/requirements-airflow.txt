@@ -1,24 +1,25 @@
-# Librerias combinadas para los DAGs de TODOS los modulos del curso.
-# Se hornean dentro de la imagen de Airflow (Dockerfile.airflow), encima de
-# apache/airflow:2.10.5-python3.11. Es una imagen PESADA porque incluye las
-# dependencias de feature engineering (modulo 1), ML avanzado (modulo 2),
-# series de tiempo (modulo 3) y GenAI / RAG (modulo 4).
+# Dependencias de la imagen de Airflow — SOLO lo que necesita el DAG del Modulo 1.
+# Se instalan encima de apache/airflow:2.10.5-python3.11.
+#
+# Mantener esto ligero es clave: antes esta imagen incluia las deps de los 4
+# modulos (torch via sentence-transformers, xgboost, statsmodels, mlflow, ...),
+# lo que la hacia pesar varios GB. Ahora es una imagen pequena.
 
-# --- Feature store (modulo 1) ---
-feast[redis]>=0.40
-
-# --- Datos y ML clasico (modulos 1, 2, 3) ---
+# --- ML clasico (lo que usa el DAG en el entorno de Airflow) ---
+# OJO: `feast` NO va aqui. feast fija uvicorn<=0.34, incompatible con Airflow 3
+# (que exige uvicorn>=0.37). Por eso feast se instala en un venv AISLADO en la
+# imagen (/opt/feast-venv, ver Dockerfile.airflow) y el DAG lo llama por CLI.
 pandas>=2.0
 numpy>=1.24
 scikit-learn>=1.3
 pyarrow>=14.0
-seaborn>=0.12
-xgboost>=2.0
-statsmodels>=0.14
+joblib>=1.3
 
-# --- Tracking de experimentos (todo el curso) ---
-mlflow>=3.1
-
-# --- Vector DB / GenAI (modulo 4) ---
-qdrant-client>=1.7
-sentence-transformers>=2.2
+# --- (Opcional) deps de los DAGs de otros modulos ---
+# Descomenta solo si montas los DAGs de esos modulos (ver docker-compose.yml).
+# La imagen crecera bastante (torch pesa varios GB).
+# xgboost>=2.0
+# statsmodels>=0.14
+# mlflow>=3.1
+# qdrant-client>=1.7
+# sentence-transformers>=2.2

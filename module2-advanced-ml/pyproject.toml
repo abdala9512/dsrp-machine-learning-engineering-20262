@@ -1,0 +1,38 @@
+[project]
+name = "module2-advanced-ml"
+version = "0.1.0"
+description = "Modulo 2 — Algoritmos avanzados de ML + MLflow (Advanced ML Engineering)"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    # Datos y ML
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "scikit-learn>=1.3",
+    "matplotlib>=3.7",
+    "seaborn>=0.12",
+    # Librerias de ensembles / gradient boosting (notebook 2)
+    "xgboost>=2.0",
+    "lightgbm>=4.0",
+    "catboost>=1.2",
+    # Reduccion de dimensionalidad (notebook 4)
+    "umap-learn>=0.5",
+    # numba moderno: evita que el resolutor caiga a un llvmlite antiguo
+    # (sin soporte para Python 3.12) al resolver umap-learn -> pynndescent
+    "numba>=0.60",
+    # Deep learning (rueda CPU de PyTorch, notebook 5)
+    "torch>=2.0",
+    # Experiment tracking & model registry (MLflow 3.x)
+    "mlflow>=3.1",
+    "psycopg2-binary>=2.9",
+    # Backend cloud de tracking: dagshub.init(..., mlflow=True)
+    "dagshub>=0.3",
+    # Herramientas de notebook
+    "jupyterlab>=4.0",
+    "nbformat>=5.9",
+]
+
+[tool.uv]
+# Proyecto gestionado con uv. Instalacion:  uv sync
+# Ejecutar Jupyter:                          uv run jupyter lab
+package = false

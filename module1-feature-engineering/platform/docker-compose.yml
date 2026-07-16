@@ -1,71 +1,31 @@
 # =============================================================================
-# Plataforma compartida del curso (Module 1 la introduce, todos la usan)
+# Plataforma compartida del curso — configuracion LIGERA (Modulo 1)
 # =============================================================================
-# Un unico docker-compose levanta TODA la infraestructura compartida:
+# Pensada para no fundir tu maquina. Por defecto levanta solo 3 contenedores:
 #
-#   Feature store (Feast)
-#     - redis       -> online store de Feast (serving de baja latencia)
-#     - postgres    -> registry / offline backend de Feast
+#   redis      -> online store de Feast (serving de baja latencia)
+#   feast-ui   -> UI web de Feast en http://localhost:8888
+#   airflow    -> Airflow 3 en UN solo contenedor (`airflow standalone`) con
+#                 SQLite; UI en http://localhost:8080 (login admin / airflow)
 #
-#   Orquestacion (orquestador COMPARTIDO de todo el curso)
-#     - airflow-db        -> base de metadatos de Airflow
-#     - airflow-init      -> migracion + creacion del usuario admin (one-shot)
-#     - airflow-webserver -> UI en http://localhost:8080 (airflow / airflow)
-#     - airflow-scheduler -> ejecuta los DAGs
+# Que se aligero respecto a la version anterior:
+#   - Airflow paso de 4 contenedores (init + webserver + scheduler + postgres)
+#     a UNO solo. En Airflow 3 se usa `airflow standalone` (api-server + scheduler
+#     + dag-processor + triggerer) sobre SQLite: sin base de metadatos aparte.
+#   - La imagen de Airflow instala SOLO las deps del Modulo 1 (adios torch,
+#     sentence-transformers, xgboost, mlflow...). Pasa de varios GB a unos cientos
+#     de MB.
+#   - El Postgres de Feast es OPCIONAL (el registry por defecto es un archivo).
 #
-# Todos los servicios comparten una red de Docker. Por eso, dentro de la red el
-# online store de Feast es el host "redis" (desde el host usas localhost:6379).
+# Dentro de la red de Docker el online store es el host "redis" (desde tu maquina
+# usas localhost:6379). Redis NO trae UI propia; hay un RedisInsight opcional.
 #
-# Nota: el seguimiento de experimentos (MLflow) se introduce en el Modulo 2; el
-# Modulo 1 = Feast + Airflow solamente.
-#
-# Levantar todo:        docker compose up -d --build
-# Solo la capa Feast:   docker compose up -d redis postgres
-# Bajar:                docker compose down            (conserva volumenes)
-#                       docker compose down -v          (borra los datos)
-
-x-airflow-common: &airflow-common
-  build:
-    context: .
-    dockerfile: Dockerfile.airflow
-  image: dsrp-course-airflow:2.10.5
-  environment: &airflow-env
-    AIRFLOW__CORE__EXECUTOR: LocalExecutor
-    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db:5432/airflow
-    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
-    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
-    AIRFLOW__CORE__FERNET_KEY: ""
-    AIRFLOW__WEBSERVER__SECRET_KEY: "dsrp-course-platform-secret"
-    AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "true"
-    # Donde el DAG del modulo 1 lee/escribe (ver dags/feature_pipeline.py).
-    PIPELINE_DATA_DIR: /opt/airflow/data
-    FEAST_REPO_DIR: /opt/airflow/feast_repo
-    FEAST_REPO_SRC: /opt/airflow/feature_repo_src
-    FEAST_REDIS_HOST: redis
-    FEAST_REDIS_PORT: "6379"
-    # Ruta del CSV de Ames Housing dentro del contenedor (ver volumenes abajo).
-    HOUSING_CSV: /opt/airflow/housing_data/housing_train.csv
-    # Vector DB para los DAGs de modulos posteriores.
-    QDRANT_URL: http://host.docker.internal:6333
-  extra_hosts:
-    - "host.docker.internal:host-gateway"
-  volumes:
-    # Cada modulo monta sus DAGs en un subfolder de /opt/airflow/dags.
-    - ./dags:/opt/airflow/dags/module1
-    - ../../module2-advanced-ml/airflow/dags:/opt/airflow/dags/module2
-    - ../../module3-time-series/airflow/dags:/opt/airflow/dags/module3
-    - ../../module4-genai/airflow/dags:/opt/airflow/dags/module4
-    # El repo de features (read-only) se monta aparte para que el DAG lo copie.
-    - ./feature_repo:/opt/airflow/feature_repo_src:ro
-    # El CSV de Ames Housing (repo-root data/) montado read-only para el DAG.
-    - ../../data:/opt/airflow/housing_data:ro
-    - airflow-logs:/opt/airflow/logs
-    - airflow-data:/opt/airflow/data
-    - feast-repo:/opt/airflow/feast_repo
-  user: "${AIRFLOW_UID:-50000}:0"
-  depends_on:
-    airflow-db:
-      condition: service_healthy
+# Levantar (ligero):     docker compose up -d --build
+# Solo Feast + UI:       docker compose up -d --build redis feast-ui
+# Con Postgres de Feast: docker compose --profile feast-sql-registry up -d
+# Con UI de Redis:       docker compose --profile redis-ui up -d
+# Bajar:                 docker compose down            (conserva volumenes)
+#                        docker compose down -v          (borra los datos)
 
 services:
   # =========================================================== Feast =========
@@ -84,9 +44,62 @@ services:
       retries: 5
     restart: unless-stopped
 
+  # UI web de Feast: explora entidades, feature views, fuentes y features.
+  feast-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.feast
+    image: dsrp-course-feast:latest
+    container_name: feast-ui
+    depends_on:
+      redis:
+        condition: service_healthy
+    ports:
+      - "8888:8888"   # una sola UI: muestra module1_features Y hello_features
+    environment:
+      # features.py del hola-mundo resuelve la ruta de su parquet con esta var.
+      HELLO_FEAST_DATA: /feast_data
+    volumes:
+      # Los repos de features (read-only); los copiamos para poder editarlos.
+      - ./feature_repo:/feature_repo_src
+      - ./hello_feature_repo:/hello_feature_repo_src
+      # Registry COMPARTIDO (module1_features + hello_features) + datos hola-mundo.
+      # Lo escriben este contenedor (apply inicial) y los DAGs de Airflow.
+      - feast-data:/feast_data
+      # La UI de feast 0.64 viene sin la ruta /api/v1/registry; este script la agrega.
+      - ./serve_ui.py:/serve_ui.py
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        set -e
+        cd /                       # no quedarnos dentro de /repo (lo vamos a borrar)
+        # El volumen compartido tambien lo escribe el usuario `airflow` (uid 50000)
+        # del otro contenedor; este proceso corre como root, asi que abre permisos.
+        chmod 0777 /feast_data
+        # Repo de housing: online store "redis" (no localhost) y registry compartido.
+        rm -rf /repo && cp -r /feature_repo_src /repo
+        sed -i 's/localhost:6379/redis:6379/' /repo/feature_store.yaml
+        sed -i 's|registry: data/registry.db|registry: /feast_data/registry.db|' /repo/feature_store.yaml
+        # Repo del hola-mundo: mismo tratamiento, MISMO registry (otro proyecto).
+        rm -rf /hello_repo && cp -r /hello_feature_repo_src /hello_repo
+        sed -i 's/localhost:6379/redis:6379/' /hello_repo/feature_store.yaml
+        sed -i 's|registry: data/registry.db|registry: /feast_data/registry.db|' /hello_repo/feature_store.yaml
+        # Registramos AMBOS proyectos para que la UI tenga que mostrar desde el
+        # arranque (los DAGs re-aplican lo mismo; es idempotente).
+        feast -c /repo apply
+        feast -c /hello_repo apply
+        chmod 0666 /feast_data/registry.db
+        # Una sola UI para todo el registry (selector de proyectos arriba a la izquierda).
+        exec python /serve_ui.py /repo 0.0.0.0 8888
+    restart: unless-stopped
+
+  # (OPCIONAL) Postgres como registry/offline SQL de Feast. No arranca por defecto.
+  # Actívalo con:  docker compose --profile feast-sql-registry up -d
   postgres:
     image: postgres:16
     container_name: feast-postgres
+    profiles: ["feast-sql-registry"]
     environment:
       POSTGRES_USER: feast
       POSTGRES_PASSWORD: feast
@@ -103,73 +116,89 @@ services:
     restart: unless-stopped
 
   # =========================================================== Airflow =======
-  airflow-db:
-    image: postgres:16
-    container_name: airflow-postgres
+  # UN solo contenedor: migra la BD SQLite, crea el usuario admin, y corre
+  # scheduler + webserver. SequentialExecutor (sin Celery ni Postgres de metadatos).
+  airflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
+    image: dsrp-course-airflow:light
+    container_name: airflow
+    depends_on:
+      redis:
+        condition: service_healthy
     environment:
-      POSTGRES_USER: airflow
-      POSTGRES_PASSWORD: airflow
-      POSTGRES_DB: airflow
+      # Airflow 3: SequentialExecutor ya no existe; standalone usa LocalExecutor+SQLite.
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+      # Auth (SimpleAuthManager, el de Airflow 3): usuario admin con rol admin.
+      # La contrasena se siembra en el command (archivo de passwords) -> admin / airflow.
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: "admin:admin"
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_PASSWORDS_FILE: /opt/airflow/simple_auth_manager_passwords.json
+      # (Alternativa sin login: comenta lo de arriba y pon
+      #  AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "True")
+      # Donde el DAG del Modulo 1 lee/escribe (ver dags/feature_pipeline.py).
+      PIPELINE_DATA_DIR: /opt/airflow/data
+      FEAST_REPO_DIR: /opt/airflow/feast_repo
+      FEAST_REPO_SRC: /opt/airflow/feature_repo_src
+      FEAST_REDIS_HOST: redis
+      FEAST_REDIS_PORT: "6379"
+      HOUSING_CSV: /opt/airflow/housing_data/housing_train.csv
+      # feast vive en un venv aislado (incompatibilidad de deps con Airflow 3).
+      FEAST_BIN: /opt/feast-venv/bin/feast
+      # DAGs hola-mundo: repo versionado, copia escribible y volumen compartido
+      # (registry compartido + parquet) que tambien monta feast-ui para su UI.
+      HELLO_FEAST_REPO_SRC: /opt/airflow/hello_feature_repo_src
+      HELLO_FEAST_REPO_DIR: /opt/airflow/hello_feast_repo
+      HELLO_FEAST_DATA: /feast_data
+    ports:
+      - "8080:8080"
     volumes:
-      - airflow-db-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U airflow -d airflow"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
-    restart: unless-stopped
-
-  airflow-init:
-    <<: *airflow-common
-    container_name: airflow-init
-    # One-shot: migra la base de metadatos y crea el usuario admin.
+      - ./dags:/opt/airflow/dags/module1:ro
+      - ./feature_repo:/opt/airflow/feature_repo_src:ro
+      - ./hello_feature_repo:/opt/airflow/hello_feature_repo_src:ro
+      - feast-data:/feast_data
+      - ../../data:/opt/airflow/housing_data:ro
+      # --- (Opcional) DAGs de otros modulos. Requieren descomentar sus deps en
+      #     requirements-airflow.txt (la imagen crecera mucho). ---
+      # - ../../module3-time-series/airflow/dags:/opt/airflow/dags/module3:ro
+      # - ../../module4-genai/airflow/dags:/opt/airflow/dags/module4:ro
     entrypoint: /bin/bash
     command:
       - -c
       - |
-        airflow db migrate
-        airflow users create \
-          --username airflow --password airflow \
-          --firstname Air --lastname Flow --role Admin \
-          --email admin@example.com || true
-    restart: "no"
-
-  airflow-webserver:
-    <<: *airflow-common
-    container_name: airflow-webserver
-    command: webserver
-    ports:
-      - "8080:8080"
+        # Sembramos una contrasena fija para el usuario admin (si no, Airflow 3
+        # la genera aleatoria en cada arranque).
+        echo '{"admin": "airflow"}' > /opt/airflow/simple_auth_manager_passwords.json
+        # `airflow standalone` corre TODO en un proceso: api-server + scheduler
+        # + dag-processor + triggerer, sobre SQLite. Un solo contenedor.
+        exec airflow standalone
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
-      interval: 15s
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/api/v2/monitor/health || curl -fsS http://localhost:8080/ || exit 1"]
+      interval: 20s
       timeout: 10s
-      retries: 10
-      start_period: 40s
-    depends_on:
-      airflow-db:
-        condition: service_healthy
-      airflow-init:
-        condition: service_completed_successfully
+      retries: 12
+      start_period: 120s
     restart: unless-stopped
 
-  airflow-scheduler:
-    <<: *airflow-common
-    container_name: airflow-scheduler
-    command: scheduler
+  # (OPCIONAL) UI web para Redis (RedisInsight). No arranca por defecto.
+  # Actívala con:  docker compose --profile redis-ui up -d
+  # Luego abre http://localhost:5540 y conecta al host "redis", puerto 6379.
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: redisinsight
+    profiles: ["redis-ui"]
     depends_on:
-      airflow-db:
-        condition: service_healthy
-      airflow-init:
-        condition: service_completed_successfully
       redis:
         condition: service_healthy
+    ports:
+      - "5540:5540"
+    volumes:
+      - redisinsight-data:/data
     restart: unless-stopped
 
 volumes:
   redis-data:
   postgres-data:
-  airflow-db-data:
-  airflow-logs:
-  airflow-data:
-  feast-repo:
+  redisinsight-data:
+  feast-data:

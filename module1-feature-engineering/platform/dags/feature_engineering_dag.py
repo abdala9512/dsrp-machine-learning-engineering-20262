@@ -23,12 +23,22 @@ or trigger it from the CLI:  airflow dags trigger feature_engineering_pipeline
 
 from __future__ import annotations
 
+import os
+import sys
 import subprocess
 from datetime import datetime
 
 from airflow.decorators import dag, task
 
-import feature_pipeline as fp
+# El DAG y su modulo de logica (feature_pipeline.py) viven en la misma carpeta.
+# Airflow 3 no siempre agrega la subcarpeta del DAG a sys.path, asi que la
+# agregamos nosotros para poder importarlo.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import feature_pipeline as fp  # noqa: E402
+
+# feast vive en un venv aislado en la imagen (incompatibilidad de deps con
+# Airflow 3); lo llamamos por su binario. Ver Dockerfile.airflow / docker-compose.yml.
+FEAST_BIN = os.environ.get("FEAST_BIN", "feast")
 
 DEFAULT_ARGS = {
     "owner": "ml-platform",
@@ -38,7 +48,7 @@ DEFAULT_ARGS = {
 
 def _run_feast(*args: str) -> str:
     """Run a feast CLI command inside the prepared repo and stream its output."""
-    cmd = ["feast", "--chdir", str(fp.FEAST_REPO_DIR), *args]
+    cmd = [FEAST_BIN, "--chdir", str(fp.FEAST_REPO_DIR), *args]
     print(f"[feast] $ {' '.join(cmd)}")
     result = subprocess.run(cmd, capture_output=True, text=True)
     print(result.stdout)

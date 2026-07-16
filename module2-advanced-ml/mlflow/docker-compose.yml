@@ -1,0 +1,71 @@
+# Stack de tracking de MLflow para el Módulo 2
+# ---------------------------------------------
+#   * postgres        -> backend store (parámetros, métricas, metadatos del registry)
+#   * mlflow-server   -> tracking server + Model Registry, UI en :5000
+#   * artifacts       -> un volumen docker usado como artifact store
+#
+# Nota: la plataforma compartida del curso (Módulo 1, carpeta airflow/feast)
+# también puede ofrecer MLflow. Usa UNA u OTRA, no ambas: las dos publican el
+# puerto :5000. Ver mlflow/README.md.
+#
+# Levantar:  docker compose up -d
+# UI:        http://localhost:5000
+# Parar:     docker compose down            (conserva los datos)
+#            docker compose down -v          (también borra los volúmenes)
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: mlflow-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mlflow
+      POSTGRES_PASSWORD: mlflow
+      POSTGRES_DB: mlflow
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mlflow -d mlflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mlflow-server:
+    # Construimos el servidor sobre python:3.11-slim e instalamos la última
+    # versión de MLflow 3.x (>=3.1) más psycopg2 para hablar con Postgres.
+    # Esto evita depender de una etiqueta concreta de imagen publicada.
+    image: python:3.11-slim
+    container_name: mlflow-server
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
+    environment:
+      # Dónde escribe MLflow los artifacts (volumen montado más abajo).
+      MLFLOW_ARTIFACTS_DESTINATION: /mlflow/artifacts
+    volumes:
+      - artifacts:/mlflow/artifacts
+    # Instalamos MLflow 3.x + psycopg2 y arrancamos el tracking server con
+    # backend Postgres y un artifact root servido por el propio servidor.
+    command: >
+      bash -c "pip install --no-cache-dir 'mlflow>=3.1' psycopg2-binary &&
+               mlflow server
+                 --backend-store-uri postgresql://mlflow:mlflow@postgres:5432/mlflow
+                 --artifacts-destination /mlflow/artifacts
+                 --serve-artifacts
+                 --host 0.0.0.0
+                 --port 5000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0) if urllib.request.urlopen('http://localhost:5000/health').status==200 else sys.exit(1)"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 90s
+
+volumes:
+  pg-data:
+  artifacts:

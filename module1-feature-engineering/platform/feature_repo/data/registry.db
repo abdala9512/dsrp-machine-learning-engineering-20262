@@ -1,0 +1,117 @@
+
+„
+d
+house=An Ames house, identified by house_id (from the Kaggle `Id`)."house_idJmodule1_features
+šŞ°Ò¸¿ ÚšŞ°Ò¸¿ Ú
+G
+'
+__dummy"
+__dummy_idJmodule1_features
+šŞ°Òøô£ÚšŞ°Òˆ½¦Ú
+~
+^
+house=An Ames house, identified by house_id (from the Kaggle `Id`)."house_idJ
+dsrp_feast
+î°±Ò¿šóî°±Ò¿šó
+A
+!
+__dummy"
+__dummy_idJ
+dsrp_feast
+î°±Òˆ‰Ÿóî°±ÒÈ¾¢ó1"$483e669a-3eb4-4d77-b7bb-e3f72774f7ef*î°±ÒÈ„Ùõ2Ò
+
+house_featuresmodule1_featureshouse"
+overall_qual"
+gr_liv_area"
+total_bsmt_sf"
+first_flr_sf"
+garage_cars"
+garage_area"
+
+year_built"
+lot_area"
+	full_bath"
+neighborhood"
+exter_qual_ord"
+
+sale_price*
+teamml-platform*
+module12€ç„:âevent_timestamp*createdZš—/Users/miguelarquezabdala/repos/dsrp-machine-learning-engineering-20262/module1-feature-engineering/platform/feature_repo/data/housing_features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢housing_sourceºBEngineered Ames Housing features written by the Module 1 pipeline.’šŞ°ÒÀÇéÓ"šŞ°Òè€†Ú@b
+house_id’latest0
+šŞ°Ò¸‹Ú£Ş°ÒÀ×ØÌ
+ ¡Ñ Ş°Ò02¸
+—
+house_features
+dsrp_feasthouse"
+overall_qual"
+gr_liv_area"
+total_bsmt_sf"
+first_flr_sf"
+garage_cars"
+garage_area"
+
+year_built"
+lot_area"
+	full_bath"
+neighborhood"
+exter_qual_ord"
+
+sale_price*
+teamml-platform*
+module12€ç„:âevent_timestamp*createdZš—/Users/miguelarquezabdala/repos/dsrp-machine-learning-engineering-20262/module1-feature-engineering/platform/feature_repo/data/housing_features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢housing_sourceºBEngineered Ames Housing features written by the Module 1 pipeline.’î°±Ò˜£ÛÉ"î°±ÒÀûò@b
+house_id’latest
+î°±Ò¨ˆ€óî°±Ò¨ˆ€óbõevent_timestamp*createdZš—/Users/miguelarquezabdala/repos/dsrp-machine-learning-engineering-20262/module1-feature-engineering/platform/feature_repo/data/housing_features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢housing_sourceªmodule1_featuresºBEngineered Ames Housing features written by the Module 1 pipeline.’šŞ°ÒÀÇéÓ"šŞ°Òè€†Úbïevent_timestamp*createdZš—/Users/miguelarquezabdala/repos/dsrp-machine-learning-engineering-20262/module1-feature-engineering/platform/feature_repo/data/housing_features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢housing_sourceª
+dsrp_feastºBEngineered Ames Housing features written by the Module 1 pipeline.’î°±Ò˜£ÛÉ"î°±ÒÀûòŠ2
+
+module1_features
+šŞ°ÒÈ”‡ÔšŞ°ÒÈ”‡ÔŠ,
+
+
+dsrp_feast
+î°±Ò€ËúÉî°±Ò€ËúÉ’Ä
+¥
+house_featuresmodule1_features"feature_view*¾
+
+house_featuresmodule1_featureshouse"
+overall_qual"
+gr_liv_area"
+total_bsmt_sf"
+first_flr_sf"
+garage_cars"
+garage_area"
+
+year_built"
+lot_area"
+	full_bath"
+neighborhood"
+exter_qual_ord"
+
+sale_price*
+teamml-platform*
+module12€ç„:âevent_timestamp*createdZš—/Users/miguelarquezabdala/repos/dsrp-machine-learning-engineering-20262/module1-feature-engineering/platform/feature_repo/data/housing_features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢housing_sourceºBEngineered Ames Housing features written by the Module 1 pipeline.’šŞ°ÒÀÇéÓ"šŞ°Òè€†Ú@b
+house_id’latest
+šŞ°Ò¸‹ÚšŞ°Ò¸‹Ú2šŞ°ÒØäÚB$cb204213-31f8-432a-b824-d09737a55342
+™
+house_features
+dsrp_feast"feature_view*¸
+—
+house_features
+dsrp_feasthouse"
+overall_qual"
+gr_liv_area"
+total_bsmt_sf"
+first_flr_sf"
+garage_cars"
+garage_area"
+
+year_built"
+lot_area"
+	full_bath"
+neighborhood"
+exter_qual_ord"
+
+sale_price*
+teamml-platform*
+module12€ç„:âevent_timestamp*createdZš—/Users/miguelarquezabdala/repos/dsrp-machine-learning-engineering-20262/module1-feature-engineering/platform/feature_repo/data/housing_features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢housing_sourceºBEngineered Ames Housing features written by the Module 1 pipeline.’î°±Ò˜£ÛÉ"î°±ÒÀûò@b
+house_id’latest
+î°±Ò¨ˆ€óî°±Ò¨ˆ€ó2î°±ÒÅ˜óB$518b5e11-3a7c-4fa6-8c0b-3582da4d028d
