@@ -2,7 +2,9 @@
 mlflow_helpers.py
 =================
 
-Small, reusable helpers shared by every notebook in Module 2.
+Small, reusable helpers shared by every notebook in Module 3.
+(Same helpers as Module 2, plus the ``statsmodels`` model flavor used by the
+SARIMA / Exponential-Smoothing notebooks.)
 
 Goals
 -----
@@ -70,7 +72,7 @@ def _load_env_file() -> None:
     Load a ``.env`` file (simple ``KEY=VALUE`` lines) into ``os.environ`` so
     students can keep their DagsHub credentials out of the notebooks.
 
-    Looks in: the module folder (``module2-advanced-ml/.env``), the current
+    Looks in: the module folder (``module3-time-series/.env``), the current
     working directory, and its parent. Existing environment variables are
     NOT overridden. No external dependency (python-dotenv) required.
     """
@@ -147,7 +149,7 @@ def _setup_dagshub(tracking_uri: Optional[str]) -> str:
                 "backend='dagshub' needs credentials: install the `dagshub` "
                 "package (pip install dagshub) for the OAuth flow, or set "
                 "DAGSHUB_TOKEN (dagshub.com > Settings > Tokens) e.g. in "
-                "module2-advanced-ml/.env."
+                "module3-time-series/.env."
             )
         os.environ["MLFLOW_TRACKING_USERNAME"] = token
         os.environ["MLFLOW_TRACKING_PASSWORD"] = token
@@ -173,6 +175,26 @@ def _server_is_up(uri: str, timeout: float = 1.5) -> bool:
         with closing(socket.create_connection((host, port), timeout=timeout)):
             return True
     except OSError:
+        return False
+
+
+def _local_server_is_up(uri: str, timeout: float = 2.0) -> bool:
+    """
+    Health-check REAL para el backend local: pide ``GET <uri>/health`` y exige
+    un 2xx. Un chequeo TCP no basta en macOS: el puerto 5000 suele estar
+    ocupado por el AirPlay Receiver, que acepta la conexión y responde 403.
+    """
+    parsed = urlparse(uri)
+    if parsed.scheme not in ("http", "https"):
+        return True  # file:// / sqlite:// / ruta local: siempre "arriba"
+    import urllib.request
+
+    try:
+        with closing(
+            urllib.request.urlopen(uri.rstrip("/") + "/health", timeout=timeout)
+        ) as resp:
+            return 200 <= resp.status < 300
+    except Exception:
         return False
 
 
@@ -234,7 +256,7 @@ def setup_mlflow(
         uri = tracking_uri or os.getenv(
             "MLFLOW_TRACKING_URI", "http://localhost:5000"
         )
-        if not _server_is_up(uri):
+        if not _local_server_is_up(uri):
             fallback = os.path.abspath(local_fallback)
             print(
                 f"[mlflow_helpers] Tracking server '{uri}' not reachable — "
@@ -330,6 +352,7 @@ def _log_model(
         "lightgbm": "mlflow.lightgbm",
         "pytorch": "mlflow.pytorch",
         "catboost": "mlflow.catboost",
+        "statsmodels": "mlflow.statsmodels",
     }
     import importlib
 

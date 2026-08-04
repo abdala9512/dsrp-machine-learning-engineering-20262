@@ -1,0 +1,22 @@
+# Copia este archivo a `.env` (misma carpeta) y completa tus valores.
+# `utils/mlflow_helpers.py` lo carga automáticamente al llamar setup_mlflow();
+# `.env` está en .gitignore, así que tus credenciales nunca se suben al repo.
+
+# Backend de tracking: "local" (docker compose) o "dagshub" (cloud)
+MLFLOW_BACKEND=dagshub
+
+# --- Sólo para backend=dagshub -------------------------------------------
+# Owner y repo en DagsHub. Los helpers hacen por ti el equivalente a:
+#   import dagshub
+#   dagshub.init(repo_owner=DAGSHUB_USER, repo_name=DAGSHUB_REPO, mlflow=True)
+# La autenticación la maneja el paquete `dagshub` (OAuth en el navegador la
+# primera vez, token cacheado después).
+DAGSHUB_USER=abdala9512
+DAGSHUB_REPO=dsrp-machine-learning-engineering-20262
+
+# Sólo necesario si NO tienes instalado el paquete `dagshub` (sin OAuth):
+# token de acceso en dagshub.com -> Settings -> Tokens
+# DAGSHUB_TOKEN=tu-token
+
+# --- Sólo para backend=local (opcional) -----------------------------------
+# MLFLOW_TRACKING_URI=http://localhost:5000
