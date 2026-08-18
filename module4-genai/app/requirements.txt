@@ -1,0 +1,12 @@
+# Dependencias de la app Streamlit (imagen Docker).
+# El módulo completo (notebooks) se gestiona con uv en ../pyproject.toml.
+streamlit>=1.40
+python-dotenv>=1.0.0
+qdrant-client>=1.12.0
+google-genai>=1.16.0
+ollama>=0.5.0
+langchain>=0.3.0
+langchain-ollama>=0.3.0
+langgraph>=0.2.0
+rank-bm25>=0.2.2
+pillow>=10.0.0

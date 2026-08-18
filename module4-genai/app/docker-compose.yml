@@ -1,0 +1,20 @@
+# Lanza la app del agente:  cd app && docker compose up --build
+# Prerrequisitos: Qdrant arriba (cd ../qdrant && docker compose up -d) y la
+# colección ingestada (notebook 01). Las keys se leen de ../.env.
+services:
+  agente:
+    build:
+      context: ..
+      dockerfile: app/Dockerfile
+    container_name: module4-agente
+    ports:
+      - "8501:8501"
+    env_file:
+      - ../.env
+    environment:
+      # Dentro del contenedor, "localhost" es el contenedor; el Qdrant del
+      # host se alcanza por host.docker.internal.
+      QDRANT_URL: http://host.docker.internal:6333
+    extra_hosts:
+      - "host. docker.internal:host-gateway"   # necesario en Linux; inocuo en Mac
+    restart: unless-stopped

@@ -1,0 +1,42 @@
+# Module 4 — RAG multimodal, Agentes y MCP
+# (espejo de pyproject.toml para quien use pip en lugar de uv)
+
+# Base de datos vectorial
+qdrant-client>=1.12.0
+
+# Embeddings multimodales (gemini-embedding-2 via API de Gemini)
+google-genai>=1.16.0
+
+# LLM de generacion: Ollama cloud (kimi-k3)
+ollama>=0.5.0
+langchain-ollama>=0.3.0
+
+# Recuperacion lexica / sparse para busqueda hibrida
+rank-bm25>=0.2.2
+
+# LangChain + LangGraph
+langchain>=0.3.0
+langchain-text-splitters>=0.3.0
+langgraph>=0.2.0
+
+# Puente MCP -> herramientas LangChain (notebook 03)
+langchain-mcp-adapters>=0.1.0
+
+# Widgets interactivos e imagenes en los notebooks
+ipywidgets>=8.1.0
+pillow>=10.0.0
+requests>=2.31.0
+
+# Config / env
+python-dotenv>=1.0.0
+
+# SDK del Model Context Protocol (servidor FastMCP del notebook 03)
+mcp>=1.2.0
+
+# Notebooks
+jupyterlab>=4.0.0
+nbformat>=5.10.0
+
+# Numerica / datos
+numpy>=1.26.0
+pandas>=2.0.0

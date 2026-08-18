@@ -1,0 +1,802 @@
+[
+  {
+    "sku": "TM-1001",
+    "nombre": "Zapatillas urbanas ColorStep",
+    "categoria": "zapatillas",
+    "precio": 59.99,
+    "imagen": "zapatillas-urbanas.jpg",
+    "descripcion": "Zapatillas de lona estilo urbano en colores rojo y azul, con suela de goma vulcanizada y cordones clásicos. Cómodas para el día a día, combinan con jeans y look casual. Disponibles en tallas 35 a 45. SKU TM-1001."
+  },
+  {
+    "sku": "TM-1002",
+    "nombre": "Audífonos SilentBeat Pro",
+    "categoria": "audifonos",
+    "precio": 189.0,
+    "imagen": "audifonos-noise-cancelling.jpg",
+    "descripcion": "Audífonos over-ear inalámbricos con cancelación activa de ruido, Bluetooth 5.3 y hasta 30 horas de batería. Ideales para viajes, oficina y música sin distracciones. Incluyen estuche rígido y cable auxiliar. SKU TM-1002."
+  },
+  {
+    "sku": "TM-1003",
+    "nombre": "Reloj cronógrafo Aviator",
+    "categoria": "relojes",
+    "precio": 349.0,
+    "imagen": "reloj-cronografo.jpg",
+    "descripcion": "Reloj de pulsera analógico estilo aviador con cronógrafo, caja de acero inoxidable, esfera negra con números luminiscentes y correa de cuero. Resistente al agua hasta 100 metros. Movimiento mecánico automático. SKU TM-1003."
+  },
+  {
+    "sku": "TM-1004",
+    "nombre": "Mochila TrailPack 40L",
+    "categoria": "mochilas",
+    "precio": 89.5,
+    "imagen": "mochila-trekking.jpg",
+    "descripcion": "Mochila de senderismo de 40 litros con espaldar ventilado, correas ajustables, cubierta impermeable y soporte externo para bastones de trekking. Perfecta para caminatas de uno o dos días en montaña. SKU TM-1004."
+  },
+  {
+    "sku": "TM-1005",
+    "nombre": "Cafetera espresso BaristaMax",
+    "categoria": "cafeteras",
+    "precio": 499.0,
+    "imagen": "cafetera-espresso.jpg",
+    "descripcion": "Máquina de café espresso semiprofesional de acero inoxidable con vaporizador de leche para cappuccino y latte art, portafiltro doble y caldera de calentamiento rápido. Prepara café de calidad de barista en casa. SKU TM-1005."
+  },
+  {
+    "sku": "TM-1006",
+    "nombre": "Bicicleta MTB CarbonTrail 29",
+    "categoria": "bicicletas",
+    "precio": 2199.0,
+    "imagen": "bicicleta-montana.jpg",
+    "descripcion": "Bicicleta de montaña con cuadro de carbono, doble suspensión, ruedas de 29 pulgadas, frenos de disco hidráulicos y transmisión de 12 velocidades. Pensada para senderos técnicos y descensos exigentes. SKU TM-1006."
+  },
+  {
+    "sku": "TM-1007",
+    "nombre": "Gafas de sol Aviator UV400",
+    "categoria": "gafas",
+    "precio": 45.0,
+    "imagen": "gafas-de-sol.jpg",
+    "descripcion": "Gafas de sol con protección UV400, lentes polarizados y montura metálica ligera. Reducen el reflejo en carretera y agua, ideales para conducir, playa y actividades al aire libre. Incluyen estuche y paño de limpieza. SKU TM-1007."
+  },
+  {
+    "sku": "TM-1008",
+    "nombre": "Teclado mecánico TypeMaster RGB",
+    "categoria": "teclados",
+    "precio": 129.0,
+    "imagen": "teclado-mecanico.jpg",
+    "descripcion": "Teclado mecánico para gaming y programación con switches táctiles, retroiluminación RGB por tecla, teclas PBT de doble inyección y cable USB-C desmontable. Formato compacto 75% que ahorra espacio en el escritorio. SKU TM-1008."
+  },
+  {
+    "sku": "TM-1009",
+    "nombre": "Zapatillas Titan Run 29",
+    "categoria": "zapatillas",
+    "precio": 75.4,
+    "imagen": "zapatillas-02.jpg",
+    "descripcion": "Zapatillas deportivas para correr con amortiguación reactiva, suela de goma de alta tracción y malla transpirable. Ligeras y cómodas para entrenamiento diario y carreras urbanas. SKU TM-1009."
+  },
+  {
+    "sku": "TM-1010",
+    "nombre": "Zapatillas Nova Run 30",
+    "categoria": "zapatillas",
+    "precio": 105.0,
+    "imagen": "zapatillas-03.jpg",
+    "descripcion": "Zapatillas deportivas para correr con amortiguación reactiva, suela de goma de alta tracción y malla transpirable. Ligeras y cómodas para entrenamiento diario y carreras urbanas. SKU TM-1010."
+  },
+  {
+    "sku": "TM-1011",
+    "nombre": "Zapatillas Pulso Run 31",
+    "categoria": "zapatillas",
+    "precio": 54.6,
+    "imagen": "zapatillas-04.jpg",
+    "descripcion": "Zapatillas deportivas para correr con amortiguación reactiva, suela de goma de alta tracción y malla transpirable. Ligeras y cómodas para entrenamiento diario y carreras urbanas. SKU TM-1011."
+  },
+  {
+    "sku": "TM-1012",
+    "nombre": "Botas Zenit Trail 32",
+    "categoria": "botas",
+    "precio": 127.4,
+    "imagen": "botas-01.jpg",
+    "descripcion": "Botas de cuero resistentes con suela antideslizante, refuerzo en el talón y costuras selladas. Pensadas para uso urbano y caminatas en clima frío o húmedo. SKU TM-1012."
+  },
+  {
+    "sku": "TM-1013",
+    "nombre": "Botas Vertex Trail 33",
+    "categoria": "botas",
+    "precio": 168.1,
+    "imagen": "botas-02.jpg",
+    "descripcion": "Botas de cuero resistentes con suela antideslizante, refuerzo en el talón y costuras selladas. Pensadas para uso urbano y caminatas en clima frío o húmedo. SKU TM-1013."
+  },
+  {
+    "sku": "TM-1014",
+    "nombre": "Botas Kairo Trail 34",
+    "categoria": "botas",
+    "precio": 98.8,
+    "imagen": "botas-03.jpg",
+    "descripcion": "Botas de cuero resistentes con suela antideslizante, refuerzo en el talón y costuras selladas. Pensadas para uso urbano y caminatas en clima frío o húmedo. SKU TM-1014."
+  },
+  {
+    "sku": "TM-1015",
+    "nombre": "Botas Lumen Trail 35",
+    "categoria": "botas",
+    "precio": 139.5,
+    "imagen": "botas-04.jpg",
+    "descripcion": "Botas de cuero resistentes con suela antideslizante, refuerzo en el talón y costuras selladas. Pensadas para uso urbano y caminatas en clima frío o húmedo. SKU TM-1015."
+  },
+  {
+    "sku": "TM-1016",
+    "nombre": "Audífonos Aurora Sound 36",
+    "categoria": "audifonos",
+    "precio": 282.2,
+    "imagen": "audifonos-02.jpg",
+    "descripcion": "Audífonos over-ear con cancelación de ruido, Bluetooth y batería de larga duración. Almohadillas acolchadas y sonido balanceado para música, llamadas y estudio. SKU TM-1016."
+  },
+  {
+    "sku": "TM-1017",
+    "nombre": "Audífonos Vanta Sound 37",
+    "categoria": "audifonos",
+    "precio": 149.9,
+    "imagen": "audifonos-03.jpg",
+    "descripcion": "Audífonos over-ear con cancelación de ruido, Bluetooth y batería de larga duración. Almohadillas acolchadas y sonido balanceado para música, llamadas y estudio. SKU TM-1017."
+  },
+  {
+    "sku": "TM-1018",
+    "nombre": "Audífonos Orbis Sound 38",
+    "categoria": "audifonos",
+    "precio": 227.6,
+    "imagen": "audifonos-04.jpg",
+    "descripcion": "Audífonos over-ear con cancelación de ruido, Bluetooth y batería de larga duración. Almohadillas acolchadas y sonido balanceado para música, llamadas y estudio. SKU TM-1018."
+  },
+  {
+    "sku": "TM-1019",
+    "nombre": "Earbuds Titan Air 39",
+    "categoria": "earbuds",
+    "precio": 42.3,
+    "imagen": "earbuds-01.jpg",
+    "descripcion": "Audífonos internos inalámbricos con estuche de carga, resistencia al sudor y micrófono integrado. Ajuste ergonómico para deporte, viajes y llamadas. SKU TM-1019."
+  },
+  {
+    "sku": "TM-1020",
+    "nombre": "Earbuds Nova Air 40",
+    "categoria": "earbuds",
+    "precio": 83.0,
+    "imagen": "earbuds-02.jpg",
+    "descripcion": "Audífonos internos inalámbricos con estuche de carga, resistencia al sudor y micrófono integrado. Ajuste ergonómico para deporte, viajes y llamadas. SKU TM-1020."
+  },
+  {
+    "sku": "TM-1021",
+    "nombre": "Earbuds Pulso Air 41",
+    "categoria": "earbuds",
+    "precio": 123.7,
+    "imagen": "earbuds-03.jpg",
+    "descripcion": "Audífonos internos inalámbricos con estuche de carga, resistencia al sudor y micrófono integrado. Ajuste ergonómico para deporte, viajes y llamadas. SKU TM-1021."
+  },
+  {
+    "sku": "TM-1022",
+    "nombre": "Earbuds Zenit Air 42",
+    "categoria": "earbuds",
+    "precio": 54.4,
+    "imagen": "earbuds-04.jpg",
+    "descripcion": "Audífonos internos inalámbricos con estuche de carga, resistencia al sudor y micrófono integrado. Ajuste ergonómico para deporte, viajes y llamadas. SKU TM-1022."
+  },
+  {
+    "sku": "TM-1023",
+    "nombre": "Altavoz Vertex Beat 43",
+    "categoria": "altavoces",
+    "precio": 98.24,
+    "imagen": "altavoces-01.jpg",
+    "descripcion": "Altavoz Bluetooth portátil con graves potentes, resistencia al agua y hasta 12 horas de batería. Ideal para reuniones, paseos y música al aire libre. SKU TM-1023."
+  },
+  {
+    "sku": "TM-1024",
+    "nombre": "Altavoz Kairo Beat 44",
+    "categoria": "altavoces",
+    "precio": 144.12,
+    "imagen": "altavoces-02.jpg",
+    "descripcion": "Altavoz Bluetooth portátil con graves potentes, resistencia al agua y hasta 12 horas de batería. Ideal para reuniones, paseos y música al aire libre. SKU TM-1024."
+  },
+  {
+    "sku": "TM-1025",
+    "nombre": "Altavoz Lumen Beat 45",
+    "categoria": "altavoces",
+    "precio": 66.0,
+    "imagen": "altavoces-03.jpg",
+    "descripcion": "Altavoz Bluetooth portátil con graves potentes, resistencia al agua y hasta 12 horas de batería. Ideal para reuniones, paseos y música al aire libre. SKU TM-1025."
+  },
+  {
+    "sku": "TM-1026",
+    "nombre": "Altavoz Aurora Beat 46",
+    "categoria": "altavoces",
+    "precio": 111.88,
+    "imagen": "altavoces-04.jpg",
+    "descripcion": "Altavoz Bluetooth portátil con graves potentes, resistencia al agua y hasta 12 horas de batería. Ideal para reuniones, paseos y música al aire libre. SKU TM-1026."
+  },
+  {
+    "sku": "TM-1027",
+    "nombre": "Reloj Vanta Classic 47",
+    "categoria": "relojes",
+    "precio": 395.6,
+    "imagen": "relojes-02.jpg",
+    "descripcion": "Reloj de pulsera analógico con caja metálica, cristal endurecido y correa intercambiable. Diseño clásico que combina con ropa formal y casual. SKU TM-1027."
+  },
+  {
+    "sku": "TM-1028",
+    "nombre": "Reloj Orbis Classic 48",
+    "categoria": "relojes",
+    "precio": 181.4,
+    "imagen": "relojes-03.jpg",
+    "descripcion": "Reloj de pulsera analógico con caja metálica, cristal endurecido y correa intercambiable. Diseño clásico que combina con ropa formal y casual. SKU TM-1028."
+  },
+  {
+    "sku": "TM-1029",
+    "nombre": "Reloj Titan Classic 49",
+    "categoria": "relojes",
+    "precio": 307.2,
+    "imagen": "relojes-04.jpg",
+    "descripcion": "Reloj de pulsera analógico con caja metálica, cristal endurecido y correa intercambiable. Diseño clásico que combina con ropa formal y casual. SKU TM-1029."
+  },
+  {
+    "sku": "TM-1030",
+    "nombre": "Smartwatch Nova Fit 50",
+    "categoria": "smartwatch",
+    "precio": 106.0,
+    "imagen": "smartwatch-01.jpg",
+    "descripcion": "Reloj inteligente con monitor de ritmo cardíaco, GPS, seguimiento de sueño y notificaciones del teléfono. Batería para varios días de uso. SKU TM-1030."
+  },
+  {
+    "sku": "TM-1031",
+    "nombre": "Smartwatch Pulso Fit 51",
+    "categoria": "smartwatch",
+    "precio": 205.9,
+    "imagen": "smartwatch-02.jpg",
+    "descripcion": "Reloj inteligente con monitor de ritmo cardíaco, GPS, seguimiento de sueño y notificaciones del teléfono. Batería para varios días de uso. SKU TM-1031."
+  },
+  {
+    "sku": "TM-1032",
+    "nombre": "Smartwatch Zenit Fit 52",
+    "categoria": "smartwatch",
+    "precio": 305.8,
+    "imagen": "smartwatch-03.jpg",
+    "descripcion": "Reloj inteligente con monitor de ritmo cardíaco, GPS, seguimiento de sueño y notificaciones del teléfono. Batería para varios días de uso. SKU TM-1032."
+  },
+  {
+    "sku": "TM-1033",
+    "nombre": "Smartwatch Vertex Fit 53",
+    "categoria": "smartwatch",
+    "precio": 135.7,
+    "imagen": "smartwatch-04.jpg",
+    "descripcion": "Reloj inteligente con monitor de ritmo cardíaco, GPS, seguimiento de sueño y notificaciones del teléfono. Batería para varios días de uso. SKU TM-1033."
+  },
+  {
+    "sku": "TM-1034",
+    "nombre": "Mochila Kairo Trek 54",
+    "categoria": "mochilas",
+    "precio": 107.0,
+    "imagen": "mochilas-02.jpg",
+    "descripcion": "Mochila de senderismo con espaldar ventilado, múltiples compartimentos, correas ajustables y cubierta impermeable. Cómoda para rutas de uno o varios días. SKU TM-1034."
+  },
+  {
+    "sku": "TM-1035",
+    "nombre": "Mochila Lumen Trek 55",
+    "categoria": "mochilas",
+    "precio": 144.0,
+    "imagen": "mochilas-03.jpg",
+    "descripcion": "Mochila de senderismo con espaldar ventilado, múltiples compartimentos, correas ajustables y cubierta impermeable. Cómoda para rutas de uno o varios días. SKU TM-1035."
+  },
+  {
+    "sku": "TM-1036",
+    "nombre": "Mochila Aurora Trek 56",
+    "categoria": "mochilas",
+    "precio": 81.0,
+    "imagen": "mochilas-04.jpg",
+    "descripcion": "Mochila de senderismo con espaldar ventilado, múltiples compartimentos, correas ajustables y cubierta impermeable. Cómoda para rutas de uno o varios días. SKU TM-1036."
+  },
+  {
+    "sku": "TM-1037",
+    "nombre": "Maleta Vanta Travel 57",
+    "categoria": "maletas",
+    "precio": 206.3,
+    "imagen": "maletas-01.jpg",
+    "descripcion": "Maleta de viaje rígida con ruedas giratorias de 360 grados, candado integrado y interior organizado. Resistente a golpes, ideal para avión y carretera. SKU TM-1037."
+  },
+  {
+    "sku": "TM-1038",
+    "nombre": "Maleta Orbis Travel 58",
+    "categoria": "maletas",
+    "precio": 99.2,
+    "imagen": "maletas-02.jpg",
+    "descripcion": "Maleta de viaje rígida con ruedas giratorias de 360 grados, candado integrado y interior organizado. Resistente a golpes, ideal para avión y carretera. SKU TM-1038."
+  },
+  {
+    "sku": "TM-1039",
+    "nombre": "Maleta Titan Travel 59",
+    "categoria": "maletas",
+    "precio": 162.1,
+    "imagen": "maletas-03.jpg",
+    "descripcion": "Maleta de viaje rígida con ruedas giratorias de 360 grados, candado integrado y interior organizado. Resistente a golpes, ideal para avión y carretera. SKU TM-1039."
+  },
+  {
+    "sku": "TM-1040",
+    "nombre": "Maleta Nova Travel 60",
+    "categoria": "maletas",
+    "precio": 225.0,
+    "imagen": "maletas-04.jpg",
+    "descripcion": "Maleta de viaje rígida con ruedas giratorias de 360 grados, candado integrado y interior organizado. Resistente a golpes, ideal para avión y carretera. SKU TM-1040."
+  },
+  {
+    "sku": "TM-1041",
+    "nombre": "Cafetera Pulso Barista 61",
+    "categoria": "cafeteras",
+    "precio": 225.5,
+    "imagen": "cafeteras-02.jpg",
+    "descripcion": "Máquina de café espresso con vaporizador de leche, portafiltro metálico y calentamiento rápido. Prepara espresso, cappuccino y latte en casa. SKU TM-1041."
+  },
+  {
+    "sku": "TM-1042",
+    "nombre": "Cafetera Zenit Barista 62",
+    "categoria": "cafeteras",
+    "precio": 392.0,
+    "imagen": "cafeteras-03.jpg",
+    "descripcion": "Máquina de café espresso con vaporizador de leche, portafiltro metálico y calentamiento rápido. Prepara espresso, cappuccino y latte en casa. SKU TM-1042."
+  },
+  {
+    "sku": "TM-1043",
+    "nombre": "Cafetera Vertex Barista 63",
+    "categoria": "cafeteras",
+    "precio": 558.5,
+    "imagen": "cafeteras-04.jpg",
+    "descripcion": "Máquina de café espresso con vaporizador de leche, portafiltro metálico y calentamiento rápido. Prepara espresso, cappuccino y latte en casa. SKU TM-1043."
+  },
+  {
+    "sku": "TM-1044",
+    "nombre": "Hervidor Kairo Terma 64",
+    "categoria": "hervidores",
+    "precio": 40.12,
+    "imagen": "hervidores-01.jpg",
+    "descripcion": "Hervidor eléctrico de acero inoxidable con apagado automático, base giratoria y hervido rápido. Perfecto para té, café e infusiones. SKU TM-1044."
+  },
+  {
+    "sku": "TM-1045",
+    "nombre": "Hervidor Lumen Terma 65",
+    "categoria": "hervidores",
+    "precio": 60.1,
+    "imagen": "hervidores-02.jpg",
+    "descripcion": "Hervidor eléctrico de acero inoxidable con apagado automático, base giratoria y hervido rápido. Perfecto para té, café e infusiones. SKU TM-1045."
+  },
+  {
+    "sku": "TM-1046",
+    "nombre": "Hervidor Aurora Terma 66",
+    "categoria": "hervidores",
+    "precio": 26.08,
+    "imagen": "hervidores-03.jpg",
+    "descripcion": "Hervidor eléctrico de acero inoxidable con apagado automático, base giratoria y hervido rápido. Perfecto para té, café e infusiones. SKU TM-1046."
+  },
+  {
+    "sku": "TM-1047",
+    "nombre": "Hervidor Vanta Terma 67",
+    "categoria": "hervidores",
+    "precio": 46.06,
+    "imagen": "hervidores-04.jpg",
+    "descripcion": "Hervidor eléctrico de acero inoxidable con apagado automático, base giratoria y hervido rápido. Perfecto para té, café e infusiones. SKU TM-1047."
+  },
+  {
+    "sku": "TM-1048",
+    "nombre": "Licuadora Orbis Mix 68",
+    "categoria": "licuadoras",
+    "precio": 139.24,
+    "imagen": "licuadoras-01.jpg",
+    "descripcion": "Licuadora de alta potencia con jarra de vidrio, varias velocidades y cuchillas de acero. Tritura hielo y prepara batidos, salsas y sopas. SKU TM-1048."
+  },
+  {
+    "sku": "TM-1049",
+    "nombre": "Licuadora Titan Mix 69",
+    "categoria": "licuadoras",
+    "precio": 61.12,
+    "imagen": "licuadoras-02.jpg",
+    "descripcion": "Licuadora de alta potencia con jarra de vidrio, varias velocidades y cuchillas de acero. Tritura hielo y prepara batidos, salsas y sopas. SKU TM-1049."
+  },
+  {
+    "sku": "TM-1050",
+    "nombre": "Licuadora Nova Mix 70",
+    "categoria": "licuadoras",
+    "precio": 107.0,
+    "imagen": "licuadoras-03.jpg",
+    "descripcion": "Licuadora de alta potencia con jarra de vidrio, varias velocidades y cuchillas de acero. Tritura hielo y prepara batidos, salsas y sopas. SKU TM-1050."
+  },
+  {
+    "sku": "TM-1051",
+    "nombre": "Licuadora Pulso Mix 71",
+    "categoria": "licuadoras",
+    "precio": 152.88,
+    "imagen": "licuadoras-04.jpg",
+    "descripcion": "Licuadora de alta potencia con jarra de vidrio, varias velocidades y cuchillas de acero. Tritura hielo y prepara batidos, salsas y sopas. SKU TM-1051."
+  },
+  {
+    "sku": "TM-1052",
+    "nombre": "Tostadora Zenit Crisp 72",
+    "categoria": "tostadoras",
+    "precio": 43.4,
+    "imagen": "tostadoras-01.jpg",
+    "descripcion": "Tostadora con ranuras anchas, niveles de dorado ajustables y bandeja recogemigas extraíble. Función de descongelar y recalentar. SKU TM-1052."
+  },
+  {
+    "sku": "TM-1053",
+    "nombre": "Tostadora Vertex Crisp 73",
+    "categoria": "tostadoras",
+    "precio": 65.6,
+    "imagen": "tostadoras-02.jpg",
+    "descripcion": "Tostadora con ranuras anchas, niveles de dorado ajustables y bandeja recogemigas extraíble. Función de descongelar y recalentar. SKU TM-1053."
+  },
+  {
+    "sku": "TM-1054",
+    "nombre": "Tostadora Kairo Crisp 74",
+    "categoria": "tostadoras",
+    "precio": 87.8,
+    "imagen": "tostadoras-03.jpg",
+    "descripcion": "Tostadora con ranuras anchas, niveles de dorado ajustables y bandeja recogemigas extraíble. Función de descongelar y recalentar. SKU TM-1054."
+  },
+  {
+    "sku": "TM-1055",
+    "nombre": "Tostadora Lumen Crisp 75",
+    "categoria": "tostadoras",
+    "precio": 50.0,
+    "imagen": "tostadoras-04.jpg",
+    "descripcion": "Tostadora con ranuras anchas, niveles de dorado ajustables y bandeja recogemigas extraíble. Función de descongelar y recalentar. SKU TM-1055."
+  },
+  {
+    "sku": "TM-1056",
+    "nombre": "Bicicleta Aurora MTB 76",
+    "categoria": "bicicletas",
+    "precio": 1911.0,
+    "imagen": "bicicletas-02.jpg",
+    "descripcion": "Bicicleta de montaña con suspensión, frenos de disco y transmisión de múltiples velocidades. Cuadro ligero para senderos y descensos. SKU TM-1056."
+  },
+  {
+    "sku": "TM-1057",
+    "nombre": "Bicicleta Vanta MTB 77",
+    "categoria": "bicicletas",
+    "precio": 588.0,
+    "imagen": "bicicletas-03.jpg",
+    "descripcion": "Bicicleta de montaña con suspensión, frenos de disco y transmisión de múltiples velocidades. Cuadro ligero para senderos y descensos. SKU TM-1057."
+  },
+  {
+    "sku": "TM-1058",
+    "nombre": "Bicicleta Orbis MTB 78",
+    "categoria": "bicicletas",
+    "precio": 1365.0,
+    "imagen": "bicicletas-04.jpg",
+    "descripcion": "Bicicleta de montaña con suspensión, frenos de disco y transmisión de múltiples velocidades. Cuadro ligero para senderos y descensos. SKU TM-1058."
+  },
+  {
+    "sku": "TM-1059",
+    "nombre": "Casco Titan Aero 79",
+    "categoria": "cascos",
+    "precio": 113.02,
+    "imagen": "cascos-01.jpg",
+    "descripcion": "Casco de ciclismo ventilado con ajuste de precisión, acolchado interior lavable y carcasa resistente a impactos. Certificado para uso en ruta y montaña. SKU TM-1059."
+  },
+  {
+    "sku": "TM-1060",
+    "nombre": "Casco Nova Aero 80",
+    "categoria": "cascos",
+    "precio": 53.8,
+    "imagen": "cascos-02.jpg",
+    "descripcion": "Casco de ciclismo ventilado con ajuste de precisión, acolchado interior lavable y carcasa resistente a impactos. Certificado para uso en ruta y montaña. SKU TM-1060."
+  },
+  {
+    "sku": "TM-1061",
+    "nombre": "Casco Pulso Aero 81",
+    "categoria": "cascos",
+    "precio": 88.58,
+    "imagen": "cascos-03.jpg",
+    "descripcion": "Casco de ciclismo ventilado con ajuste de precisión, acolchado interior lavable y carcasa resistente a impactos. Certificado para uso en ruta y montaña. SKU TM-1061."
+  },
+  {
+    "sku": "TM-1062",
+    "nombre": "Casco Zenit Aero 82",
+    "categoria": "cascos",
+    "precio": 123.36,
+    "imagen": "cascos-04.jpg",
+    "descripcion": "Casco de ciclismo ventilado con ajuste de precisión, acolchado interior lavable y carcasa resistente a impactos. Certificado para uso en ruta y montaña. SKU TM-1062."
+  },
+  {
+    "sku": "TM-1063",
+    "nombre": "Gafas Vertex Solar 83",
+    "categoria": "gafas",
+    "precio": 54.14,
+    "imagen": "gafas-02.jpg",
+    "descripcion": "Gafas de sol con protección UV400, lentes polarizados y montura ligera. Reducen reflejos al conducir y en actividades al aire libre. SKU TM-1063."
+  },
+  {
+    "sku": "TM-1064",
+    "nombre": "Gafas Kairo Solar 84",
+    "categoria": "gafas",
+    "precio": 88.92,
+    "imagen": "gafas-03.jpg",
+    "descripcion": "Gafas de sol con protección UV400, lentes polarizados y montura ligera. Reducen reflejos al conducir y en actividades al aire libre. SKU TM-1064."
+  },
+  {
+    "sku": "TM-1065",
+    "nombre": "Gafas Lumen Solar 85",
+    "categoria": "gafas",
+    "precio": 29.7,
+    "imagen": "gafas-04.jpg",
+    "descripcion": "Gafas de sol con protección UV400, lentes polarizados y montura ligera. Reducen reflejos al conducir y en actividades al aire libre. SKU TM-1065."
+  },
+  {
+    "sku": "TM-1066",
+    "nombre": "Teclado Aurora Type 86",
+    "categoria": "teclados",
+    "precio": 119.4,
+    "imagen": "teclados-02.jpg",
+    "descripcion": "Teclado mecánico con switches táctiles, retroiluminación configurable y construcción robusta. Pensado para programar y para gaming. SKU TM-1066."
+  },
+  {
+    "sku": "TM-1067",
+    "nombre": "Teclado Vanta Type 87",
+    "categoria": "teclados",
+    "precio": 163.8,
+    "imagen": "teclados-03.jpg",
+    "descripcion": "Teclado mecánico con switches táctiles, retroiluminación configurable y construcción robusta. Pensado para programar y para gaming. SKU TM-1067."
+  },
+  {
+    "sku": "TM-1068",
+    "nombre": "Teclado Orbis Type 88",
+    "categoria": "teclados",
+    "precio": 88.2,
+    "imagen": "teclados-04.jpg",
+    "descripcion": "Teclado mecánico con switches táctiles, retroiluminación configurable y construcción robusta. Pensado para programar y para gaming. SKU TM-1068."
+  },
+  {
+    "sku": "TM-1069",
+    "nombre": "Mouse Titan Point 89",
+    "categoria": "ratones",
+    "precio": 61.4,
+    "imagen": "ratones-01.jpg",
+    "descripcion": "Mouse ergonómico con sensor óptico de alta precisión, botones programables y desplazamiento suave. Cómodo para oficina y juegos. SKU TM-1069."
+  },
+  {
+    "sku": "TM-1070",
+    "nombre": "Mouse Nova Point 90",
+    "categoria": "ratones",
+    "precio": 91.0,
+    "imagen": "ratones-02.jpg",
+    "descripcion": "Mouse ergonómico con sensor óptico de alta precisión, botones programables y desplazamiento suave. Cómodo para oficina y juegos. SKU TM-1070."
+  },
+  {
+    "sku": "TM-1071",
+    "nombre": "Mouse Pulso Point 91",
+    "categoria": "ratones",
+    "precio": 40.6,
+    "imagen": "ratones-03.jpg",
+    "descripcion": "Mouse ergonómico con sensor óptico de alta precisión, botones programables y desplazamiento suave. Cómodo para oficina y juegos. SKU TM-1071."
+  },
+  {
+    "sku": "TM-1072",
+    "nombre": "Mouse Zenit Point 92",
+    "categoria": "ratones",
+    "precio": 70.2,
+    "imagen": "ratones-04.jpg",
+    "descripcion": "Mouse ergonómico con sensor óptico de alta precisión, botones programables y desplazamiento suave. Cómodo para oficina y juegos. SKU TM-1072."
+  },
+  {
+    "sku": "TM-1073",
+    "nombre": "Monitor Vertex View 93",
+    "categoria": "monitores",
+    "precio": 132.7,
+    "imagen": "monitores-01.jpg",
+    "descripcion": "Monitor con panel de alta resolución, bordes delgados y ajuste de altura. Colores precisos para trabajo, diseño y entretenimiento. SKU TM-1073."
+  },
+  {
+    "sku": "TM-1074",
+    "nombre": "Monitor Kairo View 94",
+    "categoria": "monitores",
+    "precio": 269.6,
+    "imagen": "monitores-02.jpg",
+    "descripcion": "Monitor con panel de alta resolución, bordes delgados y ajuste de altura. Colores precisos para trabajo, diseño y entretenimiento. SKU TM-1074."
+  },
+  {
+    "sku": "TM-1075",
+    "nombre": "Monitor Lumen View 95",
+    "categoria": "monitores",
+    "precio": 406.5,
+    "imagen": "monitores-03.jpg",
+    "descripcion": "Monitor con panel de alta resolución, bordes delgados y ajuste de altura. Colores precisos para trabajo, diseño y entretenimiento. SKU TM-1075."
+  },
+  {
+    "sku": "TM-1076",
+    "nombre": "Monitor Aurora View 96",
+    "categoria": "monitores",
+    "precio": 173.4,
+    "imagen": "monitores-04.jpg",
+    "descripcion": "Monitor con panel de alta resolución, bordes delgados y ajuste de altura. Colores precisos para trabajo, diseño y entretenimiento. SKU TM-1076."
+  },
+  {
+    "sku": "TM-1077",
+    "nombre": "Cámara Vanta Photo 97",
+    "categoria": "camaras",
+    "precio": 887.0,
+    "imagen": "camaras-01.jpg",
+    "descripcion": "Cámara digital con sensor de gran tamaño, grabación de video y controles manuales. Incluye correa y batería recargable. Para fotografía aficionada y profesional. SKU TM-1077."
+  },
+  {
+    "sku": "TM-1078",
+    "nombre": "Cámara Orbis Photo 98",
+    "categoria": "camaras",
+    "precio": 1331.0,
+    "imagen": "camaras-02.jpg",
+    "descripcion": "Cámara digital con sensor de gran tamaño, grabación de video y controles manuales. Incluye correa y batería recargable. Para fotografía aficionada y profesional. SKU TM-1078."
+  },
+  {
+    "sku": "TM-1079",
+    "nombre": "Cámara Titan Photo 99",
+    "categoria": "camaras",
+    "precio": 575.0,
+    "imagen": "camaras-03.jpg",
+    "descripcion": "Cámara digital con sensor de gran tamaño, grabación de video y controles manuales. Incluye correa y batería recargable. Para fotografía aficionada y profesional. SKU TM-1079."
+  },
+  {
+    "sku": "TM-1080",
+    "nombre": "Cámara Nova Photo 10",
+    "categoria": "camaras",
+    "precio": 1019.0,
+    "imagen": "camaras-04.jpg",
+    "descripcion": "Cámara digital con sensor de gran tamaño, grabación de video y controles manuales. Incluye correa y batería recargable. Para fotografía aficionada y profesional. SKU TM-1080."
+  },
+  {
+    "sku": "TM-1081",
+    "nombre": "Dron Pulso Sky 11",
+    "categoria": "drones",
+    "precio": 975.0,
+    "imagen": "drones-01.jpg",
+    "descripcion": "Dron cuadricóptero con cámara estabilizada, retorno automático al punto de despegue y control desde el teléfono. Para fotografía aérea y recreación. SKU TM-1081."
+  },
+  {
+    "sku": "TM-1082",
+    "nombre": "Dron Zenit Sky 12",
+    "categoria": "drones",
+    "precio": 471.0,
+    "imagen": "drones-02.jpg",
+    "descripcion": "Dron cuadricóptero con cámara estabilizada, retorno automático al punto de despegue y control desde el teléfono. Para fotografía aérea y recreación. SKU TM-1082."
+  },
+  {
+    "sku": "TM-1083",
+    "nombre": "Dron Vertex Sky 13",
+    "categoria": "drones",
+    "precio": 767.0,
+    "imagen": "drones-03.jpg",
+    "descripcion": "Dron cuadricóptero con cámara estabilizada, retorno automático al punto de despegue y control desde el teléfono. Para fotografía aérea y recreación. SKU TM-1083."
+  },
+  {
+    "sku": "TM-1084",
+    "nombre": "Dron Kairo Sky 14",
+    "categoria": "drones",
+    "precio": 263.0,
+    "imagen": "drones-04.jpg",
+    "descripcion": "Dron cuadricóptero con cámara estabilizada, retorno automático al punto de despegue y control desde el teléfono. Para fotografía aérea y recreación. SKU TM-1084."
+  },
+  {
+    "sku": "TM-1085",
+    "nombre": "Lámpara Lumen Luz 15",
+    "categoria": "lamparas",
+    "precio": 53.8,
+    "imagen": "lamparas-01.jpg",
+    "descripcion": "Lámpara de escritorio LED con brazo articulado, intensidad regulable y temperatura de color ajustable. Iluminación uniforme para leer y trabajar. SKU TM-1085."
+  },
+  {
+    "sku": "TM-1086",
+    "nombre": "Lámpara Aurora Luz 16",
+    "categoria": "lamparas",
+    "precio": 77.48,
+    "imagen": "lamparas-02.jpg",
+    "descripcion": "Lámpara de escritorio LED con brazo articulado, intensidad regulable y temperatura de color ajustable. Iluminación uniforme para leer y trabajar. SKU TM-1086."
+  },
+  {
+    "sku": "TM-1087",
+    "nombre": "Lámpara Vanta Luz 17",
+    "categoria": "lamparas",
+    "precio": 37.16,
+    "imagen": "lamparas-03.jpg",
+    "descripcion": "Lámpara de escritorio LED con brazo articulado, intensidad regulable y temperatura de color ajustable. Iluminación uniforme para leer y trabajar. SKU TM-1087."
+  },
+  {
+    "sku": "TM-1088",
+    "nombre": "Lámpara Orbis Luz 18",
+    "categoria": "lamparas",
+    "precio": 60.84,
+    "imagen": "lamparas-04.jpg",
+    "descripcion": "Lámpara de escritorio LED con brazo articulado, intensidad regulable y temperatura de color ajustable. Iluminación uniforme para leer y trabajar. SKU TM-1088."
+  },
+  {
+    "sku": "TM-1089",
+    "nombre": "Silla Titan Ergo 19",
+    "categoria": "sillas",
+    "precio": 378.0,
+    "imagen": "sillas-01.jpg",
+    "descripcion": "Silla de oficina ergonómica con soporte lumbar, altura regulable y ruedas silenciosas. Respaldo transpirable para jornadas largas. SKU TM-1089."
+  },
+  {
+    "sku": "TM-1090",
+    "nombre": "Silla Nova Ergo 20",
+    "categoria": "sillas",
+    "precio": 189.0,
+    "imagen": "sillas-02.jpg",
+    "descripcion": "Silla de oficina ergonómica con soporte lumbar, altura regulable y ruedas silenciosas. Respaldo transpirable para jornadas largas. SKU TM-1090."
+  },
+  {
+    "sku": "TM-1091",
+    "nombre": "Silla Pulso Ergo 21",
+    "categoria": "sillas",
+    "precio": 300.0,
+    "imagen": "sillas-03.jpg",
+    "descripcion": "Silla de oficina ergonómica con soporte lumbar, altura regulable y ruedas silenciosas. Respaldo transpirable para jornadas largas. SKU TM-1091."
+  },
+  {
+    "sku": "TM-1092",
+    "nombre": "Silla Zenit Ergo 22",
+    "categoria": "sillas",
+    "precio": 111.0,
+    "imagen": "sillas-04.jpg",
+    "descripcion": "Silla de oficina ergonómica con soporte lumbar, altura regulable y ruedas silenciosas. Respaldo transpirable para jornadas largas. SKU TM-1092."
+  },
+  {
+    "sku": "TM-1093",
+    "nombre": "Guitarra Vertex Tono 23",
+    "categoria": "guitarras",
+    "precio": 274.8,
+    "imagen": "guitarras-01.jpg",
+    "descripcion": "Guitarra acústica con tapa de madera, mástil cómodo y sonido cálido. Incluye funda acolchada. Apta para principiantes y músicos con experiencia. SKU TM-1093."
+  },
+  {
+    "sku": "TM-1094",
+    "nombre": "Guitarra Kairo Tono 24",
+    "categoria": "guitarras",
+    "precio": 415.4,
+    "imagen": "guitarras-02.jpg",
+    "descripcion": "Guitarra acústica con tapa de madera, mástil cómodo y sonido cálido. Incluye funda acolchada. Apta para principiantes y músicos con experiencia. SKU TM-1094."
+  },
+  {
+    "sku": "TM-1095",
+    "nombre": "Guitarra Lumen Tono 25",
+    "categoria": "guitarras",
+    "precio": 176.0,
+    "imagen": "guitarras-03.jpg",
+    "descripcion": "Guitarra acústica con tapa de madera, mástil cómodo y sonido cálido. Incluye funda acolchada. Apta para principiantes y músicos con experiencia. SKU TM-1095."
+  },
+  {
+    "sku": "TM-1096",
+    "nombre": "Guitarra Aurora Tono 26",
+    "categoria": "guitarras",
+    "precio": 316.6,
+    "imagen": "guitarras-04.jpg",
+    "descripcion": "Guitarra acústica con tapa de madera, mástil cómodo y sonido cálido. Incluye funda acolchada. Apta para principiantes y músicos con experiencia. SKU TM-1096."
+  },
+  {
+    "sku": "TM-1097",
+    "nombre": "Carpa Vanta Campo 27",
+    "categoria": "carpas",
+    "precio": 229.2,
+    "imagen": "carpas-01.jpg",
+    "descripcion": "Carpa de camping impermeable de armado rápido, con mosquitero y bolsa de transporte. Espaciosa y resistente al viento para 2 a 4 personas. SKU TM-1097."
+  },
+  {
+    "sku": "TM-1098",
+    "nombre": "Carpa Orbis Campo 28",
+    "categoria": "carpas",
+    "precio": 115.8,
+    "imagen": "carpas-02.jpg",
+    "descripcion": "Carpa de camping impermeable de armado rápido, con mosquitero y bolsa de transporte. Espaciosa y resistente al viento para 2 a 4 personas. SKU TM-1098."
+  },
+  {
+    "sku": "TM-1099",
+    "nombre": "Carpa Titan Campo 29",
+    "categoria": "carpas",
+    "precio": 182.4,
+    "imagen": "carpas-03.jpg",
+    "descripcion": "Carpa de camping impermeable de armado rápido, con mosquitero y bolsa de transporte. Espaciosa y resistente al viento para 2 a 4 personas. SKU TM-1099."
+  },
+  {
+    "sku": "TM-1100",
+    "nombre": "Carpa Nova Campo 30",
+    "categoria": "carpas",
+    "precio": 69.0,
+    "imagen": "carpas-04.jpg",
+    "descripcion": "Carpa de camping impermeable de armado rápido, con mosquitero y bolsa de transporte. Espaciosa y resistente al viento para 2 a 4 personas. SKU TM-1100."
+  }
+]
