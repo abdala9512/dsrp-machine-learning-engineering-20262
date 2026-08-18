@@ -1,3 +1,7 @@
+
+#
+.claude/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -226,3 +230,10 @@ module1-feature-engineering/_build_notebooks.py
 !/data/housing_train.csv
 !/data/housing_test.csv
 .DS_Store
+
+# Module 3: cachés del dataset UCI y matrices derivadas (se descargan/generan solos)
+module3-time-series/data/*
+!module3-time-series/data/.gitkeep
+module3-time-series/mlruns.db
+module3-time-series/notebooks/mlruns.db
+mlruns/
